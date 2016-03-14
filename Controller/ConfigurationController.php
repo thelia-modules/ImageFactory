@@ -18,9 +18,11 @@ use ImageFactory\Model\ImageFactoryQuery;
 use Symfony\Component\Form\Form;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
+use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Translation\Translator;
 use Thelia\Model\LangQuery;
 use Thelia\Core\HttpFoundation\Response;
+use Thelia\Model\ProductImageQuery;
 
 /**
  * Class ConfigurationController

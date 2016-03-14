@@ -147,6 +147,20 @@ class FactoryHandler
      * @param ProductImage $imageModel
      * @return FactoryResponse
      */
+    public function getUri($factoryCode, $imageModel)
+    {
+        $url = $this->getUrl($factoryCode, $imageModel);
+
+        $parseUrl = parse_url($url);
+
+        return $parseUrl['path'];
+    }
+
+    /**
+     * @param string $factoryCode
+     * @param ProductImage $imageModel
+     * @return FactoryResponse
+     */
     public function getUrl($factoryCode, $imageModel)
     {
         if (!($imageModel instanceof ActiveRecordInterface) || !method_exists($imageModel, 'getFile')) {

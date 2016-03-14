@@ -47,4 +47,6 @@ With PHP
     $factoryCode = 'test';
 
     $url = $factoryHandler->getUrl($factoryCode, $image);
+
+    $uri = $factoryHandler->getUri($factoryCode, $image);
 ```

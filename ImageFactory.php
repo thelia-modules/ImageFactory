@@ -12,17 +12,30 @@
 
 namespace ImageFactory;
 
+use ImageFactory\Model\ImageFactoryQuery;
+use Thelia\Install\Database;
+use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Module\BaseModule;
 
+/**
+ * Class ImageFactory
+ * @package ImageFactory
+ * @author Gilles Bourgeat <gilles@thelia.net>
+ */
 class ImageFactory extends BaseModule
 {
     /** @var string */
     const DOMAIN_NAME = 'imagefactory';
 
-    /*
-     * You may now override BaseModuleInterface methods, such as:
-     * install, destroy, preActivation, postActivation, preDeactivation, postDeactivation
-     *
-     * Have fun !
+    /**
+     * @param ConnectionInterface $con
      */
+    public function postActivation(ConnectionInterface $con = null)
+    {
+        try {
+            ImageFactoryQuery::create()->findOne();
+        } catch (\Exception $e) {
+            (new Database($con))->insertSql(null, [__DIR__ . "/Config/thelia.sql", __DIR__ . "/Config/insert.sql"]);
+        }
+    }
 }
