@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+    <table name="image_factory" namespace="ImageFactory\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="code" required="true" size="255" type="VARCHAR" />
+        <column name="title" size="255" type="VARCHAR" />
+        <column name="description" type="CLOB" />
+        <column name="sources" required="true" type="ARRAY" />
+        <column name="destination" size="255" type="VARCHAR" />
+        <column name="width" required="true" type="INTEGER" />
+        <column name="height" required="true" type="INTEGER" />
+        <column name="quality" required="true" type="TINYINT" defaultValue="75" />
+        <column name="resize_mode" type="VARCHAR" size="55" defaultValue="exact_ratio_with_borders" />
+        <column name="rotation" type="TINYINT" defaultValue="0" />
+        <column name="prefix" size="55" type="VARCHAR" />
+        <column name="suffix" size="55" type="VARCHAR" />
+        <column name="layers" type="ARRAY" />
+        <column name="effects" type="ARRAY" />
+        <column name="pixel_ratios" type="ARRAY" />
+        <column name="interlace" type="VARCHAR" size="55" defaultValue="none" />
+        <column name="persist" type="BOOLEAN" defaultValue="1" />
+        <column name="imagine_library_code" type="VARCHAR" defaultValue="gd" />
+
+        <behavior name="timestampable" />
+
+        <unique>
+            <unique-column name="code" />
+        </unique>
+
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="title, description" />
+        </behavior>
+    </table>
+
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

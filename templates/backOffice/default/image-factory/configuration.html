@@ -1,0 +1,100 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl l='Modules'}{/block}
+
+{block name="check-auth"}
+    {check_auth role="ADMIN" module=$module_code access="view" login_tpl="/admin/login"}
+{/block}
+
+{block name="main-content"}
+    <div class="modules-configure" id="module-image-factory-configuration">
+
+        <div id="wrapper" class="container">
+            <div class="clearfix">
+                <ul class="breadcrumb pull-left">
+                    <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+                    <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+                    <li><a href="#">{intl l="Configure"} : {loop type="module" name="module-name" code=$module_code}{$CODE} - {$TITLE}{/loop}</a></li>
+                </ul>
+            </div>
+
+            <div class="general-block-decorator">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <caption>
+                                {intl l="Image Factory configuration" d="imagefactory.bo.default"}
+                                <a class="btn btn-primary action-btn pull-right" title="Add a new folder" href="#folder_creation_dialog" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                </a>
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th>{intl l="#" d="imagefactory.bo.default"}</th>
+                                    <th>{intl l="Code" d="imagefactory.bo.default"}</th>
+                                    <th>{intl l="Title" d="imagefactory.bo.default"}</th>
+                                    <th>{intl l="Source" d="imagefactory.bo.default"}</th>
+                                    <th>{intl l="Destination" d="imagefactory.bo.default"}</th>
+                                    <th class="actions">{intl l="Action" d="imagefactory.bo.default"}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {if !$factories|count}
+                                <tr colspan="6">
+                                    <td>
+                                        <div class="alert alert-warning">
+                                            {intl l="No factory found in your configurations." d="imagefactory.bo.default"}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {/if}
+                            {foreach from=$factories item=factory}
+                                <tr data-id="{$factory->getId()}">
+                                    <td>
+                                        {$factory->getId()}
+                                    </td>
+                                    <td>
+                                        {$factory->getCode()}
+                                    </td>
+                                    <td>
+                                        {$factory->getTitle()}
+                                    </td>
+                                    <td>
+                                        {$factory->getSource()}
+                                    </td>
+                                    <td>
+                                        {$factory->getDestination()}
+                                    </td>
+                                    <td class="actions">
+                                        <button class="btn btn-info js-action-view">{intl l="View" d="imagefactory.bo.default"}</button>
+                                        <button class="btn btn-primary js-action-copy">{intl l="Copy" d="imagefactory.bo.default"}</button>
+                                        <button class="btn btn-danger js-action-delete">{intl l="Delete" d="imagefactory.bo.default"}</button>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {hook name="module.configuration" location="module_configuration"  modulecode="$module_code"}
+
+        </div>
+
+        {include file="image-factory/include/modal-create.html"}
+        {include file="image-factory/include/modal-copy.html"}
+        {include file="image-factory/include/modal-delete.html"}
+    </div>
+
+{/block}
+
+{block name="javascript-last-call"}
+    {hook name="module.config-js" location="module-config-js" modulecode="$module_code"}
+
+    {hook name="wysiwyg.js" location="wysiwyg-module-config-js" }
+{/block}
