@@ -47,7 +47,7 @@ class KernelRequestListener implements EventSubscriberInterface
         // test if extension is an image, this avoids initialize the factoryResolver
         if (null !== $pathInfo->getExtension()
             && !empty($pathInfo->getBasename())
-            && in_array(strtolower($pathInfo->getExtension()), FactoryEntity::FILE_EXTENSION_DESTINATION)
+            && in_array(strtolower($pathInfo->getExtension()), FactoryEntity::$FILE_EXTENSION_DESTINATION)
             && null !== $response = $this->factoryHandler->getResponse($event->getRequest())
         ) {
             $event->setResponse($response);

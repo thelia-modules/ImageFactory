@@ -102,7 +102,7 @@ class FactoryResolver
         // test if extension is an image
         if (null === $pathInfo->getExtension()
             || empty($pathInfo->getBasename())
-            || !in_array(strtolower($pathInfo->getExtension()), FactoryEntity::FILE_EXTENSION_DESTINATION)
+            || !in_array(strtolower($pathInfo->getExtension()), FactoryEntity::$FILE_EXTENSION_DESTINATION)
         ) {
             return null;
         }

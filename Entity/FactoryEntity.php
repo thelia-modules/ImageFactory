@@ -25,14 +25,13 @@ class FactoryEntity implements FactoryEntityInterface
     const IMAGINE_LIBRARY8_IMAGICK = 'imagick';
     const IMAGINE_LIBRARY8_GMAGICK = 'gmagick';
 
-    /** Files support */
-    const FILE_EXTENSION_SOURCE = ['jpg', 'jpeg', 'png'];
-    const FILE_EXTENSION_DESTINATION = ['jpg', 'jpeg', 'png'];
-
     /** Resize mode */
     const RESIZE_MODE_EXACT_RATIO_WITH_BORDERS = 'exact_ratio_with_borders';
     const RESIZE_MODE_EXACT_RATIO_WITH_CROP = 'exact_ratio_with_crop';
     const RESIZE_MODE_KEEP_IMAGE_RATIO = 'keep_image_ratio';
+
+    /** Files support */
+    public static $FILE_EXTENSION_DESTINATION = ['jpg', 'jpeg', 'png'];
 
     /** @var string[] */
     protected $sources = [];
@@ -83,7 +82,7 @@ class FactoryEntity implements FactoryEntityInterface
     protected $imagineLibraryCode = self::IMAGINE_LIBRARY8_GD;
 
     /** @var string */
-    protected $imageNotFoundFullSourcePath = __DIR__ . DS . '..' . DS . 'images' . DS . 'not-found.jpg';
+    protected $imageNotFoundFullSourcePath;
 
     /** @var bool default true */
     protected $imageNotFoundActivate = true;
@@ -215,7 +214,9 @@ class FactoryEntity implements FactoryEntityInterface
      */
     public function getImageNotFoundFullSourcePath()
     {
-        return $this->imageNotFoundFullSourcePath;
+        // Todo replace by database configuration var
+        $defaultPath = __DIR__ . DS . '..' . DS . 'images' . DS . 'not-found.jpg';
+        return $this->imageNotFoundFullSourcePath !== null ? $this->imageNotFoundFullSourcePath : $defaultPath;
     }
 
     /**
