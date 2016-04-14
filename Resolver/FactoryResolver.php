@@ -99,9 +99,11 @@ class FactoryResolver
     {
         $pathInfo = new PathInfo($path);
 
+        $basename = $pathInfo->getBasename();
+
         // test if extension is an image
         if (null === $pathInfo->getExtension()
-            || empty($pathInfo->getBasename())
+            || empty($basename)
             || !in_array(strtolower($pathInfo->getExtension()), FactoryEntity::$FILE_EXTENSION_DESTINATION)
         ) {
             return null;
@@ -304,8 +306,9 @@ class FactoryResolver
             return $palette->color($factory->getBackgroundColor());
         }
 
+        // Todo getBackgroundAlpha
         // Define a fully transparent white background color
-        return $palette->color('FFFFFF', 0);
+        return $palette->color('FFFFFF', 100);
     }
 
     /**

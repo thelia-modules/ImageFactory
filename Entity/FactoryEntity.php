@@ -31,7 +31,7 @@ class FactoryEntity implements FactoryEntityInterface
     const RESIZE_MODE_KEEP_IMAGE_RATIO = 'keep_image_ratio';
 
     /** Files support */
-    public static $FILE_EXTENSION_DESTINATION = ['jpg', 'jpeg', 'png'];
+    public static $FILE_EXTENSION_DESTINATION = ['jpg', 'jpeg', 'png', 'gif'];
 
     /** @var string[] */
     protected $sources = [];
