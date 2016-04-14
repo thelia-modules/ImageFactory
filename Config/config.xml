@@ -24,10 +24,12 @@
         </service>
     </services>
 
+    <!--
     <hooks>
         <hook id="image.factory.config" class="ImageFactory\Hook\ConfigurationHook" scope="request">
             <tag name="hook.event_listener" event="module.config-js" type="back" method="onModuleConfigurationJs"/>
         </hook>
     </hooks>
+    -->
 
 </config>
