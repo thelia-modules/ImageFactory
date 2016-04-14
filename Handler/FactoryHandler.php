@@ -68,7 +68,7 @@ class FactoryHandler
     /**
      * @return FactoryResolver
      */
-    protected function getFactoryResolver()
+    public function getFactoryResolver()
     {
         if (null === $this->factoryResolver) {
             $this->factoryResolver = new FactoryResolver($this->getFactories());
@@ -121,25 +121,6 @@ class FactoryHandler
         }
 
         return null;
-    }
-
-    /**
-     * @param string $code
-     * @return FactoryEntity
-     */
-    public function getFactoryByCode($code)
-    {
-        return $this->getFactoryResolver()->getByCode($code);
-    }
-
-    /**
-     * @param FactoryEntity $factory
-     * @param PathInfo $pathInfo
-     * @return FactoryResponse
-     */
-    public function resolveByFactoryAndImagePathInfo(FactoryEntity $factory, PathInfo $pathInfo)
-    {
-        return $this->getFactoryResolver()->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
     }
 
     /**

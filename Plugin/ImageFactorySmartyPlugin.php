@@ -32,6 +32,8 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
     const ARG_CODE = 'code';
     const ARG_VIEW = 'view';
     const ARG_VIEW_ID = 'view_id';
+    const ARG_STRICT_MODE = 'strict_mode';
+    const ARG_FORCE_NOT_FOUND = 'force_not_found';
     const ARG_IMAGE_ID = 'image_id';
     const ARG_FILE_NAME = 'file_name';
     const ARG_LIMIT = 'limit';
@@ -68,13 +70,15 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
      */
     public function generateHTML(array $params, \Smarty_Internal_Template &$smarty)
     {
-        if (empty($this->getParam($params, self::ARG_CODE, ''))) {
+        $code = $this->getParam($params, self::ARG_CODE, '');
+
+        if (empty($code)) {
             throw new \InvalidArgumentException('Invalid argument code, please specify a factory code.');
         }
 
         $params[self::ARG_ATTR] = !isset($params[self::ARG_ATTR]) ? [] : $params[self::ARG_ATTR];
 
-        $factory = $this->factoryHandler->getFactoryByCode($this->getParam($params, self::ARG_CODE));
+        $factory = $this->getFactoryResolver()->getByCode($this->getParam($params, self::ARG_CODE));
 
         if (null !== $this->getParam($params, self::ARG_FILE_NAME)) {
             $images = $this->resolveByFileName($factory, $params);
@@ -86,8 +90,13 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             }
         }
 
-        if (!isset($images)) {
-            throw new \InvalidArgumentException('Invalid argument for smarty method image_factory');
+        if (empty($images)) {
+            $strictMode = (bool) $this->getParam($params, self::ARG_STRICT_MODE, false);
+            if ($strictMode) {
+                throw new \InvalidArgumentException('Invalid argument for smarty method image_factory');
+            } elseif ((bool) $this->getParam($params, self::ARG_FORCE_NOT_FOUND, false)) {
+                $images = $this->generateImagesNotFound($factory, $params);
+            }
         }
 
         // Todo faker
@@ -104,23 +113,27 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         }
         */
 
-        // check if inner arg
-        $inner = $this->getParam($params, self::ARG_INNER);
+        if (!empty($images)) {
+            // check if inner arg
+            $inner = $this->getParam($params, self::ARG_INNER);
 
-        if ($inner !== null && strpos($inner, '?') <= 0) {
-            foreach ($images as $key => $image) {
-                $images[$key] = str_replace('?', $image, $inner);
+            if ($inner !== null && strpos($inner, '?') <= 0) {
+                foreach ($images as $key => $image) {
+                    $images[$key] = str_replace('?', $image, $inner);
+                }
             }
+
+            // check if out method
+            if (null !== $out = $this->getParam($params, self::ARG_OUT, null)) {
+                $smarty->assign($params[self::ARG_OUT], $images);
+                return null;
+            }
+
+            // else render string method
+            return implode("\r\n", $images);
         }
 
-        // check if out method
-        if (null !== $out = $this->getParam($params, self::ARG_OUT, null)) {
-            $smarty->assign($out, $images);
-            return null;
-        }
-
-        // else render string method
-        return implode("\r\n", $images);
+        return "";
     }
 
     /**
@@ -144,7 +157,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $imageModels = $modelCriteria->find();
 
-        return $this->generateImageByModelCriteria($factory, $params, $imageModels);
+        return $this->generateImagesByModelCriteria($factory, $params, $imageModels);
     }
 
     /**
@@ -169,7 +182,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $imageModels = $modelCriteria->find();
 
-        return $this->generateImageByModelCriteria($factory, $params, $imageModels);
+        return $this->generateImagesByModelCriteria($factory, $params, $imageModels);
     }
 
     /**
@@ -249,7 +262,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
      * @param \Thelia\Model\Product[] $models
      * @return string[]
      */
-    protected function generateImageByModelCriteria(FactoryEntity $factory, array $params, $models)
+    protected function generateImagesByModelCriteria(FactoryEntity $factory, array $params, $models)
     {
         $images = [];
 
@@ -266,6 +279,23 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
                 $params,
                 $this->getPathByView($this->getParam($params, self::ARG_VIEW)) . DS . $model->getFile()
             );
+        }
+
+        return $images;
+    }
+
+    /**
+     * @param FactoryEntity $factory
+     * @param array $params
+     * @return array
+     */
+    protected function generateImagesNotFound(FactoryEntity $factory, array $params)
+    {
+        $images = [];
+        $nb = 1;
+
+        for ($i = 0; $i < $nb; $i++) {
+            $images[] = $this->generateImage($factory, $params, $factory->getImageNotFoundFullSourcePath());
         }
 
         return $images;
@@ -301,7 +331,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             $pathInfo = new PathInfo($fileSource);
 
             $factory->setDisableProcessGenerate(true);
-            $factoryResponse = $this->factoryHandler->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
+            $factoryResponse = $this->getFactoryResolver()->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
 
             $params[self::ARG_ATTR]['src'] = $this->URL->absoluteUrl(
                 '/' . $factoryResponse->getImageDestinationUri(),
@@ -314,6 +344,14 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             $params[self::ARG_ATTR][$name] = $name . '="' . addcslashes($attribute, '"') . '"';
         }
         return '<img ' . implode(' ', $params[self::ARG_ATTR]) . '/>';
+    }
+
+    /**
+     * @return \ImageFactory\Resolver\FactoryResolver
+     */
+    protected function getFactoryResolver()
+    {
+        return$this->factoryHandler->getFactoryResolver();
     }
 
     /**

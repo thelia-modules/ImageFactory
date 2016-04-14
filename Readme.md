@@ -36,6 +36,11 @@ With Smarty
 <ul>
   {image_factory attr=['class'=> 'example-3'] code='test' file_name="sample-image-394.png,sample-image-396.png" inner="<li>?</li>"}
 </ul>
+
+{* With force image not found *}
+<ul>
+  {image_factory force_not_found=true code='test' file_name="an-image-which-does-not-exist"}
+</ul>
 ```
 
 With PHP

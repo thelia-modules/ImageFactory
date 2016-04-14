@@ -136,7 +136,7 @@ class FactoryResolver
      * @param FactoryResponse $factoryResponse
      * @return FactoryResponse|null
      */
-    protected function generateImageNotFound(FactoryEntity $factory, PathInfo $pathInfo, FactoryResponse $factoryResponse)
+    public function generateImageNotFound(FactoryEntity $factory, PathInfo $pathInfo, FactoryResponse $factoryResponse)
     {
         if ($factory->isImageNotFoundActivate()) {
             $this->constructFactoryResponseImageNotFound($factory, $pathInfo, $factoryResponse);
