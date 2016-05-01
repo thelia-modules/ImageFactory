@@ -295,7 +295,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         $nb = 1;
 
         for ($i = 0; $i < $nb; $i++) {
-            $images[] = $this->generateImage($factory, $params, $factory->getImageNotFoundFullSourcePath());
+            $images[] = $this->generateImage($factory, $params, $factory->getImageNotFoundSourcePath());
         }
 
         return $images;

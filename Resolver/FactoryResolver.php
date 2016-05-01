@@ -303,10 +303,9 @@ class FactoryResolver
         $palette = new RGB();
 
         if ($factory->getBackgroundColor() !== null) {
-            return $palette->color($factory->getBackgroundColor());
+            return $palette->color($factory->getBackgroundColor(), $factory->getBackgroundOpacity());
         }
 
-        // Todo getBackgroundAlpha
         // Define a fully transparent white background color
         return $palette->color('FFFFFF', 100);
     }
@@ -523,7 +522,7 @@ class FactoryResolver
     ) {
         $factoryResponse->setImageNotFound(true);
 
-        $infoImageNotFound = new PathInfo($factory->getImageNotFoundFullSourcePath());
+        $infoImageNotFound = new PathInfo($factory->getImageNotFoundSourcePath());
 
         if (!$this->isAbsolutePath($infoImageNotFound->getDirname())) {
             $factoryResponse->setImageSourcePath($factory->getBaseSourcePath()
@@ -534,7 +533,7 @@ class FactoryResolver
         }
 
         $factoryResponse
-            ->setImageDestinationFileName($factory->getImageNotFoundFileName())
+            ->setImageDestinationFileName($factory->getImageNotFoundDestinationFileName())
             ->setImageSourceFileName($infoImageNotFound->getFilename())
             ->setImageSourceExtension($infoImageNotFound->getExtension());
     }

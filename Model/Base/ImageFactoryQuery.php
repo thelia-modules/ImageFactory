@@ -29,6 +29,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByWidth($order = Criteria::ASC) Order by the width column
  * @method     ChildImageFactoryQuery orderByHeight($order = Criteria::ASC) Order by the height column
  * @method     ChildImageFactoryQuery orderByQuality($order = Criteria::ASC) Order by the quality column
+ * @method     ChildImageFactoryQuery orderByBackgroundColor($order = Criteria::ASC) Order by the background_color column
+ * @method     ChildImageFactoryQuery orderByBackgroundOpacity($order = Criteria::ASC) Order by the background_opacity column
  * @method     ChildImageFactoryQuery orderByResizeMode($order = Criteria::ASC) Order by the resize_mode column
  * @method     ChildImageFactoryQuery orderByRotation($order = Criteria::ASC) Order by the rotation column
  * @method     ChildImageFactoryQuery orderByPrefix($order = Criteria::ASC) Order by the prefix column
@@ -39,6 +41,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByInterlace($order = Criteria::ASC) Order by the interlace column
  * @method     ChildImageFactoryQuery orderByPersist($order = Criteria::ASC) Order by the persist column
  * @method     ChildImageFactoryQuery orderByImagineLibraryCode($order = Criteria::ASC) Order by the imagine_library_code column
+ * @method     ChildImageFactoryQuery orderByImageNotFoundSource($order = Criteria::ASC) Order by the image_not_found_source column
+ * @method     ChildImageFactoryQuery orderByImageNotFoundDestinationFileName($order = Criteria::ASC) Order by the image_not_found_destination_file_name column
  * @method     ChildImageFactoryQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildImageFactoryQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -49,6 +53,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByWidth() Group by the width column
  * @method     ChildImageFactoryQuery groupByHeight() Group by the height column
  * @method     ChildImageFactoryQuery groupByQuality() Group by the quality column
+ * @method     ChildImageFactoryQuery groupByBackgroundColor() Group by the background_color column
+ * @method     ChildImageFactoryQuery groupByBackgroundOpacity() Group by the background_opacity column
  * @method     ChildImageFactoryQuery groupByResizeMode() Group by the resize_mode column
  * @method     ChildImageFactoryQuery groupByRotation() Group by the rotation column
  * @method     ChildImageFactoryQuery groupByPrefix() Group by the prefix column
@@ -59,6 +65,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByInterlace() Group by the interlace column
  * @method     ChildImageFactoryQuery groupByPersist() Group by the persist column
  * @method     ChildImageFactoryQuery groupByImagineLibraryCode() Group by the imagine_library_code column
+ * @method     ChildImageFactoryQuery groupByImageNotFoundSource() Group by the image_not_found_source column
+ * @method     ChildImageFactoryQuery groupByImageNotFoundDestinationFileName() Group by the image_not_found_destination_file_name column
  * @method     ChildImageFactoryQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildImageFactoryQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -80,6 +88,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByWidth(int $width) Return the first ChildImageFactory filtered by the width column
  * @method     ChildImageFactory findOneByHeight(int $height) Return the first ChildImageFactory filtered by the height column
  * @method     ChildImageFactory findOneByQuality(int $quality) Return the first ChildImageFactory filtered by the quality column
+ * @method     ChildImageFactory findOneByBackgroundColor(string $background_color) Return the first ChildImageFactory filtered by the background_color column
+ * @method     ChildImageFactory findOneByBackgroundOpacity(int $background_opacity) Return the first ChildImageFactory filtered by the background_opacity column
  * @method     ChildImageFactory findOneByResizeMode(string $resize_mode) Return the first ChildImageFactory filtered by the resize_mode column
  * @method     ChildImageFactory findOneByRotation(int $rotation) Return the first ChildImageFactory filtered by the rotation column
  * @method     ChildImageFactory findOneByPrefix(string $prefix) Return the first ChildImageFactory filtered by the prefix column
@@ -90,6 +100,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByInterlace(string $interlace) Return the first ChildImageFactory filtered by the interlace column
  * @method     ChildImageFactory findOneByPersist(boolean $persist) Return the first ChildImageFactory filtered by the persist column
  * @method     ChildImageFactory findOneByImagineLibraryCode(string $imagine_library_code) Return the first ChildImageFactory filtered by the imagine_library_code column
+ * @method     ChildImageFactory findOneByImageNotFoundSource(string $image_not_found_source) Return the first ChildImageFactory filtered by the image_not_found_source column
+ * @method     ChildImageFactory findOneByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return the first ChildImageFactory filtered by the image_not_found_destination_file_name column
  * @method     ChildImageFactory findOneByCreatedAt(string $created_at) Return the first ChildImageFactory filtered by the created_at column
  * @method     ChildImageFactory findOneByUpdatedAt(string $updated_at) Return the first ChildImageFactory filtered by the updated_at column
  *
@@ -100,6 +112,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByWidth(int $width) Return ChildImageFactory objects filtered by the width column
  * @method     array findByHeight(int $height) Return ChildImageFactory objects filtered by the height column
  * @method     array findByQuality(int $quality) Return ChildImageFactory objects filtered by the quality column
+ * @method     array findByBackgroundColor(string $background_color) Return ChildImageFactory objects filtered by the background_color column
+ * @method     array findByBackgroundOpacity(int $background_opacity) Return ChildImageFactory objects filtered by the background_opacity column
  * @method     array findByResizeMode(string $resize_mode) Return ChildImageFactory objects filtered by the resize_mode column
  * @method     array findByRotation(int $rotation) Return ChildImageFactory objects filtered by the rotation column
  * @method     array findByPrefix(string $prefix) Return ChildImageFactory objects filtered by the prefix column
@@ -110,6 +124,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByInterlace(string $interlace) Return ChildImageFactory objects filtered by the interlace column
  * @method     array findByPersist(boolean $persist) Return ChildImageFactory objects filtered by the persist column
  * @method     array findByImagineLibraryCode(string $imagine_library_code) Return ChildImageFactory objects filtered by the imagine_library_code column
+ * @method     array findByImageNotFoundSource(string $image_not_found_source) Return ChildImageFactory objects filtered by the image_not_found_source column
+ * @method     array findByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return ChildImageFactory objects filtered by the image_not_found_destination_file_name column
  * @method     array findByCreatedAt(string $created_at) Return ChildImageFactory objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildImageFactory objects filtered by the updated_at column
  *
@@ -200,7 +216,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, RESIZE_MODE, ROTATION, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -590,6 +606,76 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::QUALITY, $quality, $comparison);
+    }
+
+    /**
+     * Filter the query on the background_color column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBackgroundColor('fooValue');   // WHERE background_color = 'fooValue'
+     * $query->filterByBackgroundColor('%fooValue%'); // WHERE background_color LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $backgroundColor The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByBackgroundColor($backgroundColor = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($backgroundColor)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $backgroundColor)) {
+                $backgroundColor = str_replace('*', '%', $backgroundColor);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::BACKGROUND_COLOR, $backgroundColor, $comparison);
+    }
+
+    /**
+     * Filter the query on the background_opacity column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByBackgroundOpacity(1234); // WHERE background_opacity = 1234
+     * $query->filterByBackgroundOpacity(array(12, 34)); // WHERE background_opacity IN (12, 34)
+     * $query->filterByBackgroundOpacity(array('min' => 12)); // WHERE background_opacity > 12
+     * </code>
+     *
+     * @param     mixed $backgroundOpacity The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByBackgroundOpacity($backgroundOpacity = null, $comparison = null)
+    {
+        if (is_array($backgroundOpacity)) {
+            $useMinMax = false;
+            if (isset($backgroundOpacity['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::BACKGROUND_OPACITY, $backgroundOpacity['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($backgroundOpacity['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::BACKGROUND_OPACITY, $backgroundOpacity['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::BACKGROUND_OPACITY, $backgroundOpacity, $comparison);
     }
 
     /**
@@ -1046,6 +1132,64 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE, $imagineLibraryCode, $comparison);
+    }
+
+    /**
+     * Filter the query on the image_not_found_source column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByImageNotFoundSource('fooValue');   // WHERE image_not_found_source = 'fooValue'
+     * $query->filterByImageNotFoundSource('%fooValue%'); // WHERE image_not_found_source LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $imageNotFoundSource The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByImageNotFoundSource($imageNotFoundSource = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($imageNotFoundSource)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $imageNotFoundSource)) {
+                $imageNotFoundSource = str_replace('*', '%', $imageNotFoundSource);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE, $imageNotFoundSource, $comparison);
+    }
+
+    /**
+     * Filter the query on the image_not_found_destination_file_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByImageNotFoundDestinationFileName('fooValue');   // WHERE image_not_found_destination_file_name = 'fooValue'
+     * $query->filterByImageNotFoundDestinationFileName('%fooValue%'); // WHERE image_not_found_destination_file_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $imageNotFoundDestinationFileName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByImageNotFoundDestinationFileName($imageNotFoundDestinationFileName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($imageNotFoundDestinationFileName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $imageNotFoundDestinationFileName)) {
+                $imageNotFoundDestinationFileName = str_replace('*', '%', $imageNotFoundDestinationFileName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, $imageNotFoundDestinationFileName, $comparison);
     }
 
     /**

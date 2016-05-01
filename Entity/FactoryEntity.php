@@ -11,6 +11,7 @@
 /*************************************************************************************/
 namespace ImageFactory\Entity;
 
+use ImageFactory\Util\Format;
 use Imagine\Image\ImageInterface;
 
 /**
@@ -82,19 +83,22 @@ class FactoryEntity implements FactoryEntityInterface
     protected $imagineLibraryCode = self::IMAGINE_LIBRARY8_GD;
 
     /** @var string */
-    protected $imageNotFoundFullSourcePath;
+    protected $imageNotFoundSourcePath;
 
     /** @var bool default true */
     protected $imageNotFoundActivate = true;
 
     /** @var string */
-    protected $imageNotFoundFileName = 'image-not-found';
+    protected $imageNotFoundDestinationFileName = 'image-not-found';
 
     /** @var bool */
     protected $debug = false;
 
     /** @var string|null */
     protected $backgroundColor;
+
+    /** @var string|null */
+    protected $backgroundOpacity;
 
     /** @var bool */
     protected $allowZoom = false;
@@ -212,20 +216,19 @@ class FactoryEntity implements FactoryEntityInterface
     /**
      * @return string
      */
-    public function getImageNotFoundFullSourcePath()
+    public function getImageNotFoundSourcePath()
     {
-        // Todo replace by database configuration var
-        $defaultPath = __DIR__ . DS . '..' . DS . 'images' . DS . 'not-found.jpg';
-        return $this->imageNotFoundFullSourcePath !== null ? $this->imageNotFoundFullSourcePath : $defaultPath;
+        return $this->imageNotFoundSourcePath !== null
+            ? $this->imageNotFoundSourcePath : __DIR__ . DS . '..' . DS . 'images' . DS . 'not-found.jpg';
     }
 
     /**
-     * @param string $imageNotFoundFullSourcePath
+     * @param string $imageNotFoundSourcePath
      * @return FactoryEntity
      */
-    public function setImageNotFoundFullSourcePath($imageNotFoundFullSourcePath)
+    public function setImageNotFoundSourcePath($imageNotFoundSourcePath)
     {
-        $this->imageNotFoundFullSourcePath = (string) $imageNotFoundFullSourcePath;
+        $this->imageNotFoundSourcePath = Format::normalizePath((string) $imageNotFoundSourcePath);
         return $this;
     }
 
@@ -268,7 +271,38 @@ class FactoryEntity implements FactoryEntityInterface
      */
     public function setBackgroundColor($backgroundColor)
     {
-        $this->backgroundColor = (string) $backgroundColor;
+        $backgroundColor = (string) $backgroundColor;
+
+        if (!preg_match('/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $backgroundColor)) {
+            throw new \InvalidArgumentException('The argument "backgroundColor" is not valid');
+        }
+
+        $this->backgroundColor = $backgroundColor;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getBackgroundOpacity()
+    {
+        return $this->backgroundOpacity;
+    }
+
+    /**
+     * @param null|string $backgroundOpacity
+     * @return FactoryEntity
+     */
+    public function setBackgroundOpacity($backgroundOpacity)
+    {
+        $backgroundOpacity = (int) $backgroundOpacity;
+
+        if ($backgroundOpacity < 0 || $backgroundOpacity > 100) {
+            throw new \InvalidArgumentException('The argument "backgroundOpacity" is not valid');
+        }
+
+        $this->backgroundOpacity = $backgroundOpacity;
         return $this;
     }
 
@@ -293,18 +327,18 @@ class FactoryEntity implements FactoryEntityInterface
     /**
      * @return string
      */
-    public function getImageNotFoundFileName()
+    public function getImageNotFoundDestinationFileName()
     {
-        return $this->imageNotFoundFileName;
+        return $this->imageNotFoundDestinationFileName;
     }
 
     /**
-     * @param string $imageNotFoundFileName
+     * @param string $imageNotFoundDestinationFileName
      * @return FactoryEntity
      */
-    public function setImageNotFoundFileName($imageNotFoundFileName)
+    public function setImageNotFoundDestinationFileName($imageNotFoundDestinationFileName)
     {
-        $this->imageNotFoundFileName = (string) $imageNotFoundFileName;
+        $this->imageNotFoundDestinationFileName = (string) $imageNotFoundDestinationFileName;
         return $this;
     }
 
@@ -367,7 +401,7 @@ class FactoryEntity implements FactoryEntityInterface
             throw new \InvalidArgumentException('The argument "path" is not valid');
         }
 
-        $this->sources[$key] = $path;
+        $this->sources[$key] = Format::normalizePath($path);
         return $this;
     }
 
@@ -627,7 +661,7 @@ class FactoryEntity implements FactoryEntityInterface
      */
     public function setBaseDestinationPath($baseDestinationPath)
     {
-        $this->baseDestinationPath = $baseDestinationPath;
+        $this->baseDestinationPath = Format::normalizePath($baseDestinationPath);
         return $this;
     }
 

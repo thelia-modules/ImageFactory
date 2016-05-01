@@ -58,7 +58,7 @@ class ImageFactoryTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 19;
+    const NUM_COLUMNS = 23;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class ImageFactoryTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 19;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /**
      * the column name for the ID field
@@ -104,6 +104,16 @@ class ImageFactoryTableMap extends TableMap
      * the column name for the QUALITY field
      */
     const QUALITY = 'image_factory.QUALITY';
+
+    /**
+     * the column name for the BACKGROUND_COLOR field
+     */
+    const BACKGROUND_COLOR = 'image_factory.BACKGROUND_COLOR';
+
+    /**
+     * the column name for the BACKGROUND_OPACITY field
+     */
+    const BACKGROUND_OPACITY = 'image_factory.BACKGROUND_OPACITY';
 
     /**
      * the column name for the RESIZE_MODE field
@@ -156,6 +166,16 @@ class ImageFactoryTableMap extends TableMap
     const IMAGINE_LIBRARY_CODE = 'image_factory.IMAGINE_LIBRARY_CODE';
 
     /**
+     * the column name for the IMAGE_NOT_FOUND_SOURCE field
+     */
+    const IMAGE_NOT_FOUND_SOURCE = 'image_factory.IMAGE_NOT_FOUND_SOURCE';
+
+    /**
+     * the column name for the IMAGE_NOT_FOUND_DESTINATION_FILE_NAME field
+     */
+    const IMAGE_NOT_FOUND_DESTINATION_FILE_NAME = 'image_factory.IMAGE_NOT_FOUND_DESTINATION_FILE_NAME';
+
+    /**
      * the column name for the CREATED_AT field
      */
     const CREATED_AT = 'image_factory.CREATED_AT';
@@ -186,12 +206,12 @@ class ImageFactoryTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Code', 'Sources', 'Destination', 'Width', 'Height', 'Quality', 'ResizeMode', 'Rotation', 'Prefix', 'Suffix', 'Layers', 'Effects', 'PixelRatios', 'Interlace', 'Persist', 'ImagineLibraryCode', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'code', 'sources', 'destination', 'width', 'height', 'quality', 'resizeMode', 'rotation', 'prefix', 'suffix', 'layers', 'effects', 'pixelRatios', 'interlace', 'persist', 'imagineLibraryCode', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(ImageFactoryTableMap::ID, ImageFactoryTableMap::CODE, ImageFactoryTableMap::SOURCES, ImageFactoryTableMap::DESTINATION, ImageFactoryTableMap::WIDTH, ImageFactoryTableMap::HEIGHT, ImageFactoryTableMap::QUALITY, ImageFactoryTableMap::RESIZE_MODE, ImageFactoryTableMap::ROTATION, ImageFactoryTableMap::PREFIX, ImageFactoryTableMap::SUFFIX, ImageFactoryTableMap::LAYERS, ImageFactoryTableMap::EFFECTS, ImageFactoryTableMap::PIXEL_RATIOS, ImageFactoryTableMap::INTERLACE, ImageFactoryTableMap::PERSIST, ImageFactoryTableMap::IMAGINE_LIBRARY_CODE, ImageFactoryTableMap::CREATED_AT, ImageFactoryTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'CODE', 'SOURCES', 'DESTINATION', 'WIDTH', 'HEIGHT', 'QUALITY', 'RESIZE_MODE', 'ROTATION', 'PREFIX', 'SUFFIX', 'LAYERS', 'EFFECTS', 'PIXEL_RATIOS', 'INTERLACE', 'PERSIST', 'IMAGINE_LIBRARY_CODE', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'code', 'sources', 'destination', 'width', 'height', 'quality', 'resize_mode', 'rotation', 'prefix', 'suffix', 'layers', 'effects', 'pixel_ratios', 'interlace', 'persist', 'imagine_library_code', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        self::TYPE_PHPNAME       => array('Id', 'Code', 'Sources', 'Destination', 'Width', 'Height', 'Quality', 'BackgroundColor', 'BackgroundOpacity', 'ResizeMode', 'Rotation', 'Prefix', 'Suffix', 'Layers', 'Effects', 'PixelRatios', 'Interlace', 'Persist', 'ImagineLibraryCode', 'ImageNotFoundSource', 'ImageNotFoundDestinationFileName', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'code', 'sources', 'destination', 'width', 'height', 'quality', 'backgroundColor', 'backgroundOpacity', 'resizeMode', 'rotation', 'prefix', 'suffix', 'layers', 'effects', 'pixelRatios', 'interlace', 'persist', 'imagineLibraryCode', 'imageNotFoundSource', 'imageNotFoundDestinationFileName', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(ImageFactoryTableMap::ID, ImageFactoryTableMap::CODE, ImageFactoryTableMap::SOURCES, ImageFactoryTableMap::DESTINATION, ImageFactoryTableMap::WIDTH, ImageFactoryTableMap::HEIGHT, ImageFactoryTableMap::QUALITY, ImageFactoryTableMap::BACKGROUND_COLOR, ImageFactoryTableMap::BACKGROUND_OPACITY, ImageFactoryTableMap::RESIZE_MODE, ImageFactoryTableMap::ROTATION, ImageFactoryTableMap::PREFIX, ImageFactoryTableMap::SUFFIX, ImageFactoryTableMap::LAYERS, ImageFactoryTableMap::EFFECTS, ImageFactoryTableMap::PIXEL_RATIOS, ImageFactoryTableMap::INTERLACE, ImageFactoryTableMap::PERSIST, ImageFactoryTableMap::IMAGINE_LIBRARY_CODE, ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE, ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, ImageFactoryTableMap::CREATED_AT, ImageFactoryTableMap::UPDATED_AT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CODE', 'SOURCES', 'DESTINATION', 'WIDTH', 'HEIGHT', 'QUALITY', 'BACKGROUND_COLOR', 'BACKGROUND_OPACITY', 'RESIZE_MODE', 'ROTATION', 'PREFIX', 'SUFFIX', 'LAYERS', 'EFFECTS', 'PIXEL_RATIOS', 'INTERLACE', 'PERSIST', 'IMAGINE_LIBRARY_CODE', 'IMAGE_NOT_FOUND_SOURCE', 'IMAGE_NOT_FOUND_DESTINATION_FILE_NAME', 'CREATED_AT', 'UPDATED_AT', ),
+        self::TYPE_FIELDNAME     => array('id', 'code', 'sources', 'destination', 'width', 'height', 'quality', 'background_color', 'background_opacity', 'resize_mode', 'rotation', 'prefix', 'suffix', 'layers', 'effects', 'pixel_ratios', 'interlace', 'persist', 'imagine_library_code', 'image_not_found_source', 'image_not_found_destination_file_name', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -201,12 +221,12 @@ class ImageFactoryTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Code' => 1, 'Sources' => 2, 'Destination' => 3, 'Width' => 4, 'Height' => 5, 'Quality' => 6, 'ResizeMode' => 7, 'Rotation' => 8, 'Prefix' => 9, 'Suffix' => 10, 'Layers' => 11, 'Effects' => 12, 'PixelRatios' => 13, 'Interlace' => 14, 'Persist' => 15, 'ImagineLibraryCode' => 16, 'CreatedAt' => 17, 'UpdatedAt' => 18, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'code' => 1, 'sources' => 2, 'destination' => 3, 'width' => 4, 'height' => 5, 'quality' => 6, 'resizeMode' => 7, 'rotation' => 8, 'prefix' => 9, 'suffix' => 10, 'layers' => 11, 'effects' => 12, 'pixelRatios' => 13, 'interlace' => 14, 'persist' => 15, 'imagineLibraryCode' => 16, 'createdAt' => 17, 'updatedAt' => 18, ),
-        self::TYPE_COLNAME       => array(ImageFactoryTableMap::ID => 0, ImageFactoryTableMap::CODE => 1, ImageFactoryTableMap::SOURCES => 2, ImageFactoryTableMap::DESTINATION => 3, ImageFactoryTableMap::WIDTH => 4, ImageFactoryTableMap::HEIGHT => 5, ImageFactoryTableMap::QUALITY => 6, ImageFactoryTableMap::RESIZE_MODE => 7, ImageFactoryTableMap::ROTATION => 8, ImageFactoryTableMap::PREFIX => 9, ImageFactoryTableMap::SUFFIX => 10, ImageFactoryTableMap::LAYERS => 11, ImageFactoryTableMap::EFFECTS => 12, ImageFactoryTableMap::PIXEL_RATIOS => 13, ImageFactoryTableMap::INTERLACE => 14, ImageFactoryTableMap::PERSIST => 15, ImageFactoryTableMap::IMAGINE_LIBRARY_CODE => 16, ImageFactoryTableMap::CREATED_AT => 17, ImageFactoryTableMap::UPDATED_AT => 18, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CODE' => 1, 'SOURCES' => 2, 'DESTINATION' => 3, 'WIDTH' => 4, 'HEIGHT' => 5, 'QUALITY' => 6, 'RESIZE_MODE' => 7, 'ROTATION' => 8, 'PREFIX' => 9, 'SUFFIX' => 10, 'LAYERS' => 11, 'EFFECTS' => 12, 'PIXEL_RATIOS' => 13, 'INTERLACE' => 14, 'PERSIST' => 15, 'IMAGINE_LIBRARY_CODE' => 16, 'CREATED_AT' => 17, 'UPDATED_AT' => 18, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'code' => 1, 'sources' => 2, 'destination' => 3, 'width' => 4, 'height' => 5, 'quality' => 6, 'resize_mode' => 7, 'rotation' => 8, 'prefix' => 9, 'suffix' => 10, 'layers' => 11, 'effects' => 12, 'pixel_ratios' => 13, 'interlace' => 14, 'persist' => 15, 'imagine_library_code' => 16, 'created_at' => 17, 'updated_at' => 18, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Code' => 1, 'Sources' => 2, 'Destination' => 3, 'Width' => 4, 'Height' => 5, 'Quality' => 6, 'BackgroundColor' => 7, 'BackgroundOpacity' => 8, 'ResizeMode' => 9, 'Rotation' => 10, 'Prefix' => 11, 'Suffix' => 12, 'Layers' => 13, 'Effects' => 14, 'PixelRatios' => 15, 'Interlace' => 16, 'Persist' => 17, 'ImagineLibraryCode' => 18, 'ImageNotFoundSource' => 19, 'ImageNotFoundDestinationFileName' => 20, 'CreatedAt' => 21, 'UpdatedAt' => 22, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'code' => 1, 'sources' => 2, 'destination' => 3, 'width' => 4, 'height' => 5, 'quality' => 6, 'backgroundColor' => 7, 'backgroundOpacity' => 8, 'resizeMode' => 9, 'rotation' => 10, 'prefix' => 11, 'suffix' => 12, 'layers' => 13, 'effects' => 14, 'pixelRatios' => 15, 'interlace' => 16, 'persist' => 17, 'imagineLibraryCode' => 18, 'imageNotFoundSource' => 19, 'imageNotFoundDestinationFileName' => 20, 'createdAt' => 21, 'updatedAt' => 22, ),
+        self::TYPE_COLNAME       => array(ImageFactoryTableMap::ID => 0, ImageFactoryTableMap::CODE => 1, ImageFactoryTableMap::SOURCES => 2, ImageFactoryTableMap::DESTINATION => 3, ImageFactoryTableMap::WIDTH => 4, ImageFactoryTableMap::HEIGHT => 5, ImageFactoryTableMap::QUALITY => 6, ImageFactoryTableMap::BACKGROUND_COLOR => 7, ImageFactoryTableMap::BACKGROUND_OPACITY => 8, ImageFactoryTableMap::RESIZE_MODE => 9, ImageFactoryTableMap::ROTATION => 10, ImageFactoryTableMap::PREFIX => 11, ImageFactoryTableMap::SUFFIX => 12, ImageFactoryTableMap::LAYERS => 13, ImageFactoryTableMap::EFFECTS => 14, ImageFactoryTableMap::PIXEL_RATIOS => 15, ImageFactoryTableMap::INTERLACE => 16, ImageFactoryTableMap::PERSIST => 17, ImageFactoryTableMap::IMAGINE_LIBRARY_CODE => 18, ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE => 19, ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME => 20, ImageFactoryTableMap::CREATED_AT => 21, ImageFactoryTableMap::UPDATED_AT => 22, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CODE' => 1, 'SOURCES' => 2, 'DESTINATION' => 3, 'WIDTH' => 4, 'HEIGHT' => 5, 'QUALITY' => 6, 'BACKGROUND_COLOR' => 7, 'BACKGROUND_OPACITY' => 8, 'RESIZE_MODE' => 9, 'ROTATION' => 10, 'PREFIX' => 11, 'SUFFIX' => 12, 'LAYERS' => 13, 'EFFECTS' => 14, 'PIXEL_RATIOS' => 15, 'INTERLACE' => 16, 'PERSIST' => 17, 'IMAGINE_LIBRARY_CODE' => 18, 'IMAGE_NOT_FOUND_SOURCE' => 19, 'IMAGE_NOT_FOUND_DESTINATION_FILE_NAME' => 20, 'CREATED_AT' => 21, 'UPDATED_AT' => 22, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'code' => 1, 'sources' => 2, 'destination' => 3, 'width' => 4, 'height' => 5, 'quality' => 6, 'background_color' => 7, 'background_opacity' => 8, 'resize_mode' => 9, 'rotation' => 10, 'prefix' => 11, 'suffix' => 12, 'layers' => 13, 'effects' => 14, 'pixel_ratios' => 15, 'interlace' => 16, 'persist' => 17, 'imagine_library_code' => 18, 'image_not_found_source' => 19, 'image_not_found_destination_file_name' => 20, 'created_at' => 21, 'updated_at' => 22, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -232,6 +252,8 @@ class ImageFactoryTableMap extends TableMap
         $this->addColumn('WIDTH', 'Width', 'INTEGER', true, null, null);
         $this->addColumn('HEIGHT', 'Height', 'INTEGER', true, null, null);
         $this->addColumn('QUALITY', 'Quality', 'TINYINT', true, null, 75);
+        $this->addColumn('BACKGROUND_COLOR', 'BackgroundColor', 'CHAR', false, 6, 'FFFFFF');
+        $this->addColumn('BACKGROUND_OPACITY', 'BackgroundOpacity', 'TINYINT', false, null, 100);
         $this->addColumn('RESIZE_MODE', 'ResizeMode', 'VARCHAR', false, 55, 'exact_ratio_with_borders');
         $this->addColumn('ROTATION', 'Rotation', 'TINYINT', false, null, 0);
         $this->addColumn('PREFIX', 'Prefix', 'VARCHAR', false, 55, null);
@@ -242,6 +264,8 @@ class ImageFactoryTableMap extends TableMap
         $this->addColumn('INTERLACE', 'Interlace', 'VARCHAR', false, 55, 'none');
         $this->addColumn('PERSIST', 'Persist', 'BOOLEAN', false, 1, true);
         $this->addColumn('IMAGINE_LIBRARY_CODE', 'ImagineLibraryCode', 'VARCHAR', false, 255, 'gd');
+        $this->addColumn('IMAGE_NOT_FOUND_SOURCE', 'ImageNotFoundSource', 'VARCHAR', false, 255, null);
+        $this->addColumn('IMAGE_NOT_FOUND_DESTINATION_FILE_NAME', 'ImageNotFoundDestinationFileName', 'VARCHAR', false, 255, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -422,6 +446,8 @@ class ImageFactoryTableMap extends TableMap
             $criteria->addSelectColumn(ImageFactoryTableMap::WIDTH);
             $criteria->addSelectColumn(ImageFactoryTableMap::HEIGHT);
             $criteria->addSelectColumn(ImageFactoryTableMap::QUALITY);
+            $criteria->addSelectColumn(ImageFactoryTableMap::BACKGROUND_COLOR);
+            $criteria->addSelectColumn(ImageFactoryTableMap::BACKGROUND_OPACITY);
             $criteria->addSelectColumn(ImageFactoryTableMap::RESIZE_MODE);
             $criteria->addSelectColumn(ImageFactoryTableMap::ROTATION);
             $criteria->addSelectColumn(ImageFactoryTableMap::PREFIX);
@@ -432,6 +458,8 @@ class ImageFactoryTableMap extends TableMap
             $criteria->addSelectColumn(ImageFactoryTableMap::INTERLACE);
             $criteria->addSelectColumn(ImageFactoryTableMap::PERSIST);
             $criteria->addSelectColumn(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE);
+            $criteria->addSelectColumn(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE);
+            $criteria->addSelectColumn(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME);
             $criteria->addSelectColumn(ImageFactoryTableMap::CREATED_AT);
             $criteria->addSelectColumn(ImageFactoryTableMap::UPDATED_AT);
         } else {
@@ -442,6 +470,8 @@ class ImageFactoryTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.WIDTH');
             $criteria->addSelectColumn($alias . '.HEIGHT');
             $criteria->addSelectColumn($alias . '.QUALITY');
+            $criteria->addSelectColumn($alias . '.BACKGROUND_COLOR');
+            $criteria->addSelectColumn($alias . '.BACKGROUND_OPACITY');
             $criteria->addSelectColumn($alias . '.RESIZE_MODE');
             $criteria->addSelectColumn($alias . '.ROTATION');
             $criteria->addSelectColumn($alias . '.PREFIX');
@@ -452,6 +482,8 @@ class ImageFactoryTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.INTERLACE');
             $criteria->addSelectColumn($alias . '.PERSIST');
             $criteria->addSelectColumn($alias . '.IMAGINE_LIBRARY_CODE');
+            $criteria->addSelectColumn($alias . '.IMAGE_NOT_FOUND_SOURCE');
+            $criteria->addSelectColumn($alias . '.IMAGE_NOT_FOUND_DESTINATION_FILE_NAME');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }

@@ -72,16 +72,6 @@ class FactoryHandler
     {
         if (null === $this->factoryResolver) {
             $this->factoryResolver = new FactoryResolver($this->getFactories());
-
-            /*
-            // create folder if not exist
-            $destinationPath = $this->getFactoryResolver()->getImageDestinationPath($factory);
-            var_dump($destinationPath);
-            exit;
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
-            }
-            */
         }
 
         return $this->factoryResolver;
@@ -246,7 +236,19 @@ class FactoryHandler
                 ->setBaseDestinationPath(THELIA_WEB_DIR)
                 ->setBaseSourcePath(THELIA_ROOT)
                 ->setDestination($imageFactory->getDestination())
+                ->setBackgroundColor($imageFactory->getBackgroundColor())
+                ->setBackgroundOpacity($imageFactory->getBackgroundOpacity())
             ;
+
+            $imageNotFoundSource = $imageFactory->getImageNotFoundSource();
+            if (!empty($imageNotFoundSource)) {
+                $factory->setImageNotFoundSourcePath($imageNotFoundSource);
+            }
+
+            $imageNotFoundDestinationFileName = $imageFactory->getImageNotFoundDestinationFileName();
+            if (!empty($imageNotFoundDestinationFileName)) {
+                $factory->setImageNotFoundDestinationFileName($imageNotFoundDestinationFileName);
+            }
 
             // Todo Add effects, filter, srcset, redirect, http source
 
