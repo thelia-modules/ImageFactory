@@ -201,15 +201,17 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             $pathInfo = new PathInfo($fileName);
 
             foreach ($factory->getSources() as $source) {
-                $path = $source . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension();
-                if (file_exists($path)) {
-                    $pathInfo = new PathInfo($path);
-                    $images[] = $this->generateImage(
-                        $factory,
-                        $params,
-                        $pathInfo->getDirname() . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension()
-                    );
-                    break;
+                if ($pathInfo->getFilename()) {
+                    $path = $source . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension();
+                    if (file_exists($path)) {
+                        $pathInfo = new PathInfo($path);
+                        $images[] = $this->generateImage(
+                            $factory,
+                            $params,
+                            $pathInfo->getDirname() . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension()
+                        );
+                        break;
+                    }
                 }
             }
         }
