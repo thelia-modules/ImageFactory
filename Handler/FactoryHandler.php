@@ -160,8 +160,13 @@ class FactoryHandler
      */
     protected function getPathByClassName($class, $fileName)
     {
-        $className = strtolower(substr(get_class($class), 0, -5));
-        return THELIA_LOCAL_DIR . 'media' . DS . 'images' . DS . strtolower($className) . DS . $fileName;
+        // remove namespace for just to have the class name
+        $className = end(explode('\\', get_class($class)));
+
+        // remove the word image "Image" , 'ProductImage ====> product
+        $className = strtolower(substr(get_class($className), 0, -5));
+
+        return THELIA_LOCAL_DIR . 'media' . DS . 'images' . DS . $className . DS . $fileName;
     }
 
     /**
