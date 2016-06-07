@@ -1,6 +1,6 @@
-# 0.2.2
+# 0.2.2 # 0.2.3
 
-- #3 Fix method `ImageFactory\Handler\FactoryHandler::getPathByClassName`, wrong path was returned. Thanks @Yochima !
+- #4, #5 Fix method `ImageFactory\Handler\FactoryHandler::getPathByClassName`, wrong path was returned. Thanks @Yochima !
 
 # 0.2.1
 

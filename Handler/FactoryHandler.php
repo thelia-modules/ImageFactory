@@ -161,10 +161,11 @@ class FactoryHandler
     protected function getPathByClassName($class, $fileName)
     {
         // remove namespace for just to have the class name
-        $className = end(explode('\\', get_class($class)));
+        $className = explode('\\', get_class($class));
+        $className = end($className);
 
         // remove the word image "Image" , 'ProductImage ====> product
-        $className = strtolower(substr(get_class($className), 0, -5));
+        $className = strtolower(substr($className, 0, -5));
 
         return THELIA_LOCAL_DIR . 'media' . DS . 'images' . DS . $className . DS . $fileName;
     }
