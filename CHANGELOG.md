@@ -1,3 +1,7 @@
+# 0.2.2
+
+- #3 Fix method `ImageFactory\Handler\FactoryHandler::getPathByClassName`, wrong path was returned. Thanks @Yochima !
+
 # 0.2.1
 
 - #3 Fix empty file_name behavior in {image_factory}
