@@ -1,3 +1,7 @@
+# 0.2.4
+
+- #6 Fix setup directory path. Thanks @Alban-io !
+
 # 0.2.2 # 0.2.3
 
 - #4, #5 Fix method `ImageFactory\Handler\FactoryHandler::getPathByClassName`, wrong path was returned. Thanks @Yochima !
