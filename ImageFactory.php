@@ -37,7 +37,7 @@ class ImageFactory extends BaseModule
         try {
             ImageFactoryQuery::create()->findOne();
         } catch (\Exception $e) {
-            (new Database($con))->insertSql(null, [__DIR__ . "/setup/thelia.sql", __DIR__ . "/setup/insert.sql"]);
+            (new Database($con))->insertSql(null, [$this->getSetupDir() . "thelia.sql", $this->getSetupDir() . "insert.sql"]);
         }
     }
 
@@ -49,7 +49,7 @@ class ImageFactory extends BaseModule
         $finder = (new Finder())
             ->files()
             ->name('#.*?\.sql#')
-            ->in(__DIR__ . DS . 'Setup' . DS . 'update'. DS . 'sql')
+            ->in($this->getSetupDir() . 'update'. DS . 'sql')
         ;
 
         $database = new Database($con);
@@ -60,5 +60,14 @@ class ImageFactory extends BaseModule
                 $database->insertSql(null, [$updateSQLFile->getPathname()]);
             }
         }
+    }
+
+    /**
+     * @return string
+     * @since 0.2.4
+     */
+    protected function getSetupDir()
+    {
+        return __DIR__ . DS . 'setup' . DS;
     }
 }
