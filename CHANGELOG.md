@@ -1,6 +1,6 @@
 # 0.2.4
 
-- #6 Fix setup directory path. Thanks @Alban-io !
+- #9 Fix setup directory path. Thanks @Alban-io !
 
 # 0.2.2 # 0.2.3
 
