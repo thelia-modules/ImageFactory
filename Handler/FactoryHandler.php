@@ -130,19 +130,25 @@ class FactoryHandler
     /**
      * @param string $factoryCode
      * @param ProductImage $imageModel
+     * @param string $path
      * @return FactoryResponse
      */
-    public function getUrl($factoryCode, $imageModel)
+    public function getUrl($factoryCode, $imageModel = null, $path = null)
     {
-        if (!($imageModel instanceof ActiveRecordInterface) || !method_exists($imageModel, 'getFile')) {
-            throw new \InvalidArgumentException('Invalid argument imageModel');
+        if ($path !== null) {
+            $pathInfo = new PathInfo($path);
+        }
+
+        if (! isset($pathInfo)) {
+
+            if (!($imageModel instanceof ActiveRecordInterface) || !method_exists($imageModel, 'getFile')) {
+                throw new \InvalidArgumentException('Invalid argument imageModel or pathinfo is require');
+            }
+
+            $pathInfo = new PathInfo($this->getPathByClassName($imageModel, $imageModel->getFile()));
         }
 
         $factory = $this->getFactoryResolver()->getByCode($factoryCode);
-
-        // Todo To improve
-        $pathInfo = new PathInfo($this->getPathByClassName($imageModel, $imageModel->getFile()));
-
         $factory->setDisableProcessGenerate(true);
         $factoryResponse = $this->getFactoryResolver()->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
 

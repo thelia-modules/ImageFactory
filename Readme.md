@@ -51,7 +51,9 @@ With PHP
     $image = ProductImageQuery::create()->findOne();
     $factoryCode = 'test';
 
+    $url = $factoryHandler->getUrl($factoryCode, null, 'path/your/image');
     $url = $factoryHandler->getUrl($factoryCode, $image);
 
+    $uri = $factoryHandler->getUri($factoryCode, null, 'path/your/image');
     $uri = $factoryHandler->getUri($factoryCode, $image);
 ```
