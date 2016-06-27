@@ -265,14 +265,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $instance = $classQuery::create();
 
-        ModelCriteriaTools::getFrontEndI18n(
-            $instance,
-            static::$locale,
-            ['TITLE'],
-            null,
-            'ID',
-            false
-        );
+        ModelCriteriaTools::getFrontEndI18n($instance, static::$locale, ['TITLE'], null, 'ID', true);
 
         return $instance;
     }
@@ -289,8 +282,8 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         /** @var \Thelia\Model\ProductImage $model */
         foreach ($models as $model) {
-            if ($model->getTitle()) {
-                $params[self::ARG_ATTR]['alt'] = $model->getTitle();
+            if ($model->hasVirtualColumn('i18n_title')) {
+                $params[self::ARG_ATTR]['alt'] = $model->getVirtualColumn('i18n_title');
             }
 
             $images[] = $this->generateImage(
