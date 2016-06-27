@@ -1,8 +1,13 @@
+# 0.2.5
+
+- #11 #12 Fix i18n processing for the smarty plugin
+- #10 Add possibility to directly set a path into the method `getUrl` on the `FactoryHandler`. Thanks @Alban-io !
+
 # 0.2.4
 
 - #9 Fix setup directory path. Thanks @Alban-io !
 
-# 0.2.2 # 0.2.3
+# 0.2.2, 0.2.3
 
 - #4, #5 Fix method `ImageFactory\Handler\FactoryHandler::getPathByClassName`, wrong path was returned. Thanks @Yochima !
 
