@@ -17,6 +17,7 @@ use ImageFactory\Util\PathInfo;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Core\HttpFoundation\Request;
+use Thelia\Model\Tools\ModelCriteriaTools;
 use Thelia\Tools\URL;
 use TheliaSmarty\Template\AbstractSmartyPlugin;
 use TheliaSmarty\Template\SmartyPluginDescriptor;
@@ -49,6 +50,9 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
     /** @var RequestStack */
     protected $requestStack;
+
+    /** @var string */
+    protected static $locale;
 
     /**
      * ImageFactorySmartyPlugin constructor.
@@ -255,7 +259,22 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         /** @var Request $request */
         $request = $this->requestStack->getCurrentRequest();
 
-        return $classQuery::create()->joinWithI18n($request->getSession()->getLang()->getLocale());
+        if (static::$locale === null) {
+            static::$locale = $request->getSession()->getLang()->getLocale();
+        }
+
+        $instance = $classQuery::create();
+
+        ModelCriteriaTools::getFrontEndI18n(
+            $instance,
+            static::$locale,
+            ['TITLE'],
+            null,
+            'ID',
+            false
+        );
+
+        return $instance;
     }
 
     /**
@@ -268,13 +287,11 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
     {
         $images = [];
 
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-
         /** @var \Thelia\Model\ProductImage $model */
         foreach ($models as $model) {
-            $model->setLocale($request->getSession()->getLang()->getLocale());
-            $params[self::ARG_ATTR]['alt'] = $model->getTitle();
+            if ($model->getTitle()) {
+                $params[self::ARG_ATTR]['alt'] = $model->getTitle();
+            }
 
             $images[] = $this->generateImage(
                 $factory,

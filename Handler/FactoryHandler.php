@@ -139,8 +139,7 @@ class FactoryHandler
             $pathInfo = new PathInfo($path);
         }
 
-        if (! isset($pathInfo)) {
-
+        if (!isset($pathInfo)) {
             if (!($imageModel instanceof ActiveRecordInterface) || !method_exists($imageModel, 'getFile')) {
                 throw new \InvalidArgumentException('Invalid argument imageModel or pathinfo is require');
             }
