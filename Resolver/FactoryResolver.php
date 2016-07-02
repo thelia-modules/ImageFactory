@@ -274,20 +274,20 @@ class FactoryResolver
             // Todo metadata
             //$this->applyMetadata($imagine, $image, $factory, $backgroundColor);
 
-            $factoryResponse->setImageBinary($image->get(
-                $factoryResponse->getImageDestinationExtension(),
-                [
-                    'quality' => $factory->getQuality()
-                ]
-            ));
+            $options = [
+                'quality' => $factory->getQuality()
+            ];
+
+            // the GD library do not support the resampling-filter option
+            if ($factory->getResamplingFilter() !== ImageInterface::FILTER_UNDEFINED
+                && $factory->getImagineLibraryCode() !== FactoryEntity::IMAGINE_LIBRARY8_GD) {
+                $options['resampling-filter'] = $factory->getResamplingFilter();
+            }
+
+            $factoryResponse->setImageBinary($image->get($factoryResponse->getImageDestinationExtension(), $options));
 
             if ($factory->isPersist()) {
-                $image->save(
-                    $factoryResponse->getImageFullDestinationPath(),
-                    [
-                        'quality' => $factory->getQuality()
-                    ]
-                );
+                $image->save($factoryResponse->getImageFullDestinationPath(), $options);
             }
         }
 

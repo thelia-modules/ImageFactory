@@ -15,8 +15,9 @@
         <column name="quality" required="true" type="TINYINT" defaultValue="75" />
         <column name="background_color" size="6" type="CHAR" defaultValue="FFFFFF" />
         <column name="background_opacity" type="TINYINT" defaultValue="100" />
-        <column name="resize_mode" type="VARCHAR" size="55" defaultValue="exact_ratio_with_borders" />
+        <column name="resize_mode" type="VARCHAR" size="55" defaultValue="exact_ratio_with_borders" description="Available filters are FactoryEntity::RESIZE_MODE_* constants." />
         <column name="rotation" type="TINYINT" defaultValue="0" />
+        <column name="resampling_filter" type="VARCHAR" size="55" defaultValue="undefined" description="Available filters are ImageInterface::FILTER_* constants." />
         <column name="prefix" size="55" type="VARCHAR" />
         <column name="suffix" size="55" type="VARCHAR" />
         <column name="layers" type="ARRAY" />
@@ -24,7 +25,7 @@
         <column name="pixel_ratios" type="ARRAY" />
         <column name="interlace" type="VARCHAR" size="55" defaultValue="none" />
         <column name="persist" type="BOOLEAN" defaultValue="1" />
-        <column name="imagine_library_code" type="VARCHAR" defaultValue="gd" />
+        <column name="imagine_library_code" type="VARCHAR" defaultValue="gd" description="Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants." />
         <column name="image_not_found_source" size="255" type="VARCHAR" />
         <column name="image_not_found_destination_file_name" size="255" type="VARCHAR" />
 

@@ -13,11 +13,11 @@
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>0.2.5</version>
+    <version>0.3.0</version>
     <authors>
         <author>
             <name>Gilles Bourgeat</name>
-            <email>gilles@thelia.net</email>
+            <email>gilles.bourgeat@gmail.com</email>
         </author>
     </authors>
     <type>classic</type>

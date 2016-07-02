@@ -136,6 +136,13 @@ abstract class ImageFactory implements ActiveRecordInterface
     protected $rotation;
 
     /**
+     * The value for the resampling_filter field.
+     * Note: this column has a database default value of: 'undefined'
+     * @var        string
+     */
+    protected $resampling_filter;
+
+    /**
      * The value for the prefix field.
      * @var        string
      */
@@ -278,6 +285,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->background_opacity = 100;
         $this->resize_mode = 'exact_ratio_with_borders';
         $this->rotation = 0;
+        $this->resampling_filter = 'undefined';
         $this->interlace = 'none';
         $this->persist = true;
         $this->imagine_library_code = 'gd';
@@ -662,7 +670,7 @@ abstract class ImageFactory implements ActiveRecordInterface
 
     /**
      * Get the [resize_mode] column value.
-     *
+     * Available filters are FactoryEntity::RESIZE_MODE_* constants.
      * @return   string
      */
     public function getResizeMode()
@@ -680,6 +688,17 @@ abstract class ImageFactory implements ActiveRecordInterface
     {
 
         return $this->rotation;
+    }
+
+    /**
+     * Get the [resampling_filter] column value.
+     * Available filters are ImageInterface::FILTER_* constants.
+     * @return   string
+     */
+    public function getResamplingFilter()
+    {
+
+        return $this->resampling_filter;
     }
 
     /**
@@ -815,7 +834,7 @@ abstract class ImageFactory implements ActiveRecordInterface
 
     /**
      * Get the [imagine_library_code] column value.
-     *
+     * Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants.
      * @return   string
      */
     public function getImagineLibraryCode()
@@ -1108,7 +1127,7 @@ abstract class ImageFactory implements ActiveRecordInterface
 
     /**
      * Set the value of [resize_mode] column.
-     *
+     * Available filters are FactoryEntity::RESIZE_MODE_* constants.
      * @param      string $v new value
      * @return   \ImageFactory\Model\ImageFactory The current object (for fluent API support)
      */
@@ -1147,6 +1166,27 @@ abstract class ImageFactory implements ActiveRecordInterface
 
         return $this;
     } // setRotation()
+
+    /**
+     * Set the value of [resampling_filter] column.
+     * Available filters are ImageInterface::FILTER_* constants.
+     * @param      string $v new value
+     * @return   \ImageFactory\Model\ImageFactory The current object (for fluent API support)
+     */
+    public function setResamplingFilter($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->resampling_filter !== $v) {
+            $this->resampling_filter = $v;
+            $this->modifiedColumns[ImageFactoryTableMap::RESAMPLING_FILTER] = true;
+        }
+
+
+        return $this;
+    } // setResamplingFilter()
 
     /**
      * Set the value of [prefix] column.
@@ -1398,7 +1438,7 @@ abstract class ImageFactory implements ActiveRecordInterface
 
     /**
      * Set the value of [imagine_library_code] column.
-     *
+     * Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants.
      * @param      string $v new value
      * @return   \ImageFactory\Model\ImageFactory The current object (for fluent API support)
      */
@@ -1531,6 +1571,10 @@ abstract class ImageFactory implements ActiveRecordInterface
                 return false;
             }
 
+            if ($this->resampling_filter !== 'undefined') {
+                return false;
+            }
+
             if ($this->interlace !== 'none') {
                 return false;
             }
@@ -1604,46 +1648,49 @@ abstract class ImageFactory implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : ImageFactoryTableMap::translateFieldName('Rotation', TableMap::TYPE_PHPNAME, $indexType)];
             $this->rotation = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : ImageFactoryTableMap::translateFieldName('Prefix', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : ImageFactoryTableMap::translateFieldName('ResamplingFilter', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->resampling_filter = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : ImageFactoryTableMap::translateFieldName('Prefix', TableMap::TYPE_PHPNAME, $indexType)];
             $this->prefix = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : ImageFactoryTableMap::translateFieldName('Suffix', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : ImageFactoryTableMap::translateFieldName('Suffix', TableMap::TYPE_PHPNAME, $indexType)];
             $this->suffix = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : ImageFactoryTableMap::translateFieldName('Layers', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : ImageFactoryTableMap::translateFieldName('Layers', TableMap::TYPE_PHPNAME, $indexType)];
             $this->layers = $col;
             $this->layers_unserialized = null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : ImageFactoryTableMap::translateFieldName('Effects', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : ImageFactoryTableMap::translateFieldName('Effects', TableMap::TYPE_PHPNAME, $indexType)];
             $this->effects = $col;
             $this->effects_unserialized = null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : ImageFactoryTableMap::translateFieldName('PixelRatios', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : ImageFactoryTableMap::translateFieldName('PixelRatios', TableMap::TYPE_PHPNAME, $indexType)];
             $this->pixel_ratios = $col;
             $this->pixel_ratios_unserialized = null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : ImageFactoryTableMap::translateFieldName('Interlace', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : ImageFactoryTableMap::translateFieldName('Interlace', TableMap::TYPE_PHPNAME, $indexType)];
             $this->interlace = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : ImageFactoryTableMap::translateFieldName('Persist', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : ImageFactoryTableMap::translateFieldName('Persist', TableMap::TYPE_PHPNAME, $indexType)];
             $this->persist = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : ImageFactoryTableMap::translateFieldName('ImagineLibraryCode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : ImageFactoryTableMap::translateFieldName('ImagineLibraryCode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->imagine_library_code = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundSource', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundSource', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_not_found_source = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundDestinationFileName', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundDestinationFileName', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_not_found_destination_file_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1656,7 +1703,7 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 23; // 23 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 24; // 24 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \ImageFactory\Model\ImageFactory object", 0, $e);
@@ -1928,6 +1975,9 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::ROTATION)) {
             $modifiedColumns[':p' . $index++]  = 'ROTATION';
         }
+        if ($this->isColumnModified(ImageFactoryTableMap::RESAMPLING_FILTER)) {
+            $modifiedColumns[':p' . $index++]  = 'RESAMPLING_FILTER';
+        }
         if ($this->isColumnModified(ImageFactoryTableMap::PREFIX)) {
             $modifiedColumns[':p' . $index++]  = 'PREFIX';
         }
@@ -2007,6 +2057,9 @@ abstract class ImageFactory implements ActiveRecordInterface
                         break;
                     case 'ROTATION':
                         $stmt->bindValue($identifier, $this->rotation, PDO::PARAM_INT);
+                        break;
+                    case 'RESAMPLING_FILTER':
+                        $stmt->bindValue($identifier, $this->resampling_filter, PDO::PARAM_STR);
                         break;
                     case 'PREFIX':
                         $stmt->bindValue($identifier, $this->prefix, PDO::PARAM_STR);
@@ -2140,39 +2193,42 @@ abstract class ImageFactory implements ActiveRecordInterface
                 return $this->getRotation();
                 break;
             case 11:
-                return $this->getPrefix();
+                return $this->getResamplingFilter();
                 break;
             case 12:
-                return $this->getSuffix();
+                return $this->getPrefix();
                 break;
             case 13:
-                return $this->getLayers();
+                return $this->getSuffix();
                 break;
             case 14:
-                return $this->getEffects();
+                return $this->getLayers();
                 break;
             case 15:
-                return $this->getPixelRatios();
+                return $this->getEffects();
                 break;
             case 16:
-                return $this->getInterlace();
+                return $this->getPixelRatios();
                 break;
             case 17:
-                return $this->getPersist();
+                return $this->getInterlace();
                 break;
             case 18:
-                return $this->getImagineLibraryCode();
+                return $this->getPersist();
                 break;
             case 19:
-                return $this->getImageNotFoundSource();
+                return $this->getImagineLibraryCode();
                 break;
             case 20:
-                return $this->getImageNotFoundDestinationFileName();
+                return $this->getImageNotFoundSource();
                 break;
             case 21:
-                return $this->getCreatedAt();
+                return $this->getImageNotFoundDestinationFileName();
                 break;
             case 22:
+                return $this->getCreatedAt();
+                break;
+            case 23:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -2215,18 +2271,19 @@ abstract class ImageFactory implements ActiveRecordInterface
             $keys[8] => $this->getBackgroundOpacity(),
             $keys[9] => $this->getResizeMode(),
             $keys[10] => $this->getRotation(),
-            $keys[11] => $this->getPrefix(),
-            $keys[12] => $this->getSuffix(),
-            $keys[13] => $this->getLayers(),
-            $keys[14] => $this->getEffects(),
-            $keys[15] => $this->getPixelRatios(),
-            $keys[16] => $this->getInterlace(),
-            $keys[17] => $this->getPersist(),
-            $keys[18] => $this->getImagineLibraryCode(),
-            $keys[19] => $this->getImageNotFoundSource(),
-            $keys[20] => $this->getImageNotFoundDestinationFileName(),
-            $keys[21] => $this->getCreatedAt(),
-            $keys[22] => $this->getUpdatedAt(),
+            $keys[11] => $this->getResamplingFilter(),
+            $keys[12] => $this->getPrefix(),
+            $keys[13] => $this->getSuffix(),
+            $keys[14] => $this->getLayers(),
+            $keys[15] => $this->getEffects(),
+            $keys[16] => $this->getPixelRatios(),
+            $keys[17] => $this->getInterlace(),
+            $keys[18] => $this->getPersist(),
+            $keys[19] => $this->getImagineLibraryCode(),
+            $keys[20] => $this->getImageNotFoundSource(),
+            $keys[21] => $this->getImageNotFoundDestinationFileName(),
+            $keys[22] => $this->getCreatedAt(),
+            $keys[23] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2309,51 +2366,54 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->setRotation($value);
                 break;
             case 11:
-                $this->setPrefix($value);
+                $this->setResamplingFilter($value);
                 break;
             case 12:
-                $this->setSuffix($value);
+                $this->setPrefix($value);
                 break;
             case 13:
-                if (!is_array($value)) {
-                    $v = trim(substr($value, 2, -2));
-                    $value = $v ? explode(' | ', $v) : array();
-                }
-                $this->setLayers($value);
+                $this->setSuffix($value);
                 break;
             case 14:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
                 }
-                $this->setEffects($value);
+                $this->setLayers($value);
                 break;
             case 15:
                 if (!is_array($value)) {
                     $v = trim(substr($value, 2, -2));
                     $value = $v ? explode(' | ', $v) : array();
                 }
-                $this->setPixelRatios($value);
+                $this->setEffects($value);
                 break;
             case 16:
-                $this->setInterlace($value);
+                if (!is_array($value)) {
+                    $v = trim(substr($value, 2, -2));
+                    $value = $v ? explode(' | ', $v) : array();
+                }
+                $this->setPixelRatios($value);
                 break;
             case 17:
-                $this->setPersist($value);
+                $this->setInterlace($value);
                 break;
             case 18:
-                $this->setImagineLibraryCode($value);
+                $this->setPersist($value);
                 break;
             case 19:
-                $this->setImageNotFoundSource($value);
+                $this->setImagineLibraryCode($value);
                 break;
             case 20:
-                $this->setImageNotFoundDestinationFileName($value);
+                $this->setImageNotFoundSource($value);
                 break;
             case 21:
-                $this->setCreatedAt($value);
+                $this->setImageNotFoundDestinationFileName($value);
                 break;
             case 22:
+                $this->setCreatedAt($value);
+                break;
+            case 23:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2391,18 +2451,19 @@ abstract class ImageFactory implements ActiveRecordInterface
         if (array_key_exists($keys[8], $arr)) $this->setBackgroundOpacity($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setResizeMode($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setRotation($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setPrefix($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setSuffix($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setLayers($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setEffects($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setPixelRatios($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setInterlace($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setPersist($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setImagineLibraryCode($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setImageNotFoundSource($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setImageNotFoundDestinationFileName($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setCreatedAt($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setUpdatedAt($arr[$keys[22]]);
+        if (array_key_exists($keys[11], $arr)) $this->setResamplingFilter($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setPrefix($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setSuffix($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setLayers($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setEffects($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setPixelRatios($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setInterlace($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setPersist($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setImagineLibraryCode($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setImageNotFoundSource($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setImageNotFoundDestinationFileName($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setCreatedAt($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setUpdatedAt($arr[$keys[23]]);
     }
 
     /**
@@ -2425,6 +2486,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::BACKGROUND_OPACITY)) $criteria->add(ImageFactoryTableMap::BACKGROUND_OPACITY, $this->background_opacity);
         if ($this->isColumnModified(ImageFactoryTableMap::RESIZE_MODE)) $criteria->add(ImageFactoryTableMap::RESIZE_MODE, $this->resize_mode);
         if ($this->isColumnModified(ImageFactoryTableMap::ROTATION)) $criteria->add(ImageFactoryTableMap::ROTATION, $this->rotation);
+        if ($this->isColumnModified(ImageFactoryTableMap::RESAMPLING_FILTER)) $criteria->add(ImageFactoryTableMap::RESAMPLING_FILTER, $this->resampling_filter);
         if ($this->isColumnModified(ImageFactoryTableMap::PREFIX)) $criteria->add(ImageFactoryTableMap::PREFIX, $this->prefix);
         if ($this->isColumnModified(ImageFactoryTableMap::SUFFIX)) $criteria->add(ImageFactoryTableMap::SUFFIX, $this->suffix);
         if ($this->isColumnModified(ImageFactoryTableMap::LAYERS)) $criteria->add(ImageFactoryTableMap::LAYERS, $this->layers);
@@ -2510,6 +2572,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $copyObj->setBackgroundOpacity($this->getBackgroundOpacity());
         $copyObj->setResizeMode($this->getResizeMode());
         $copyObj->setRotation($this->getRotation());
+        $copyObj->setResamplingFilter($this->getResamplingFilter());
         $copyObj->setPrefix($this->getPrefix());
         $copyObj->setSuffix($this->getSuffix());
         $copyObj->setLayers($this->getLayers());
@@ -2822,6 +2885,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->background_opacity = null;
         $this->resize_mode = null;
         $this->rotation = null;
+        $this->resampling_filter = null;
         $this->prefix = null;
         $this->suffix = null;
         $this->layers = null;

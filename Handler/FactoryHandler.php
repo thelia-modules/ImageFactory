@@ -261,6 +261,11 @@ class FactoryHandler
                 $factory->setImageNotFoundDestinationFileName($imageNotFoundDestinationFileName);
             }
 
+            $resamplingFilter = $imageFactory->getResamplingFilter();
+            if (!empty($resamplingFilter)) {
+                $factory->setResamplingFilter($resamplingFilter);
+            }
+
             // Todo Add effects, filter, srcset, redirect, http source
 
             $sources = [];

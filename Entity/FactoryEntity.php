@@ -118,6 +118,48 @@ class FactoryEntity implements FactoryEntityInterface
     /** @var bool */
     protected $forceRegeneration = false;
 
+    /** @var string */
+    protected $resamplingFilter = ImageInterface::FILTER_UNDEFINED;
+
+    /**
+     * @return string
+     */
+    public function getResamplingFilter()
+    {
+        return $this->resamplingFilter;
+    }
+
+    /**
+     * @param string $resamplingFilter
+     * @return FactoryEntity
+     */
+    public function setResamplingFilter($resamplingFilter)
+    {
+        if (!in_array($resamplingFilter, [
+            ImageInterface::FILTER_UNDEFINED,
+            ImageInterface::FILTER_POINT,
+            ImageInterface::FILTER_BOX,
+            ImageInterface::FILTER_TRIANGLE,
+            ImageInterface::FILTER_HERMITE,
+            ImageInterface::FILTER_HANNING,
+            ImageInterface::FILTER_HAMMING,
+            ImageInterface::FILTER_BLACKMAN,
+            ImageInterface::FILTER_GAUSSIAN,
+            ImageInterface::FILTER_QUADRATIC,
+            ImageInterface::FILTER_CUBIC,
+            ImageInterface::FILTER_CATROM,
+            ImageInterface::FILTER_MITCHELL,
+            ImageInterface::FILTER_LANCZOS,
+            ImageInterface::FILTER_BESSEL,
+            ImageInterface::FILTER_SINC
+        ])) {
+            throw new \InvalidArgumentException('Invalid argument resampling filter');
+        }
+
+        $this->resamplingFilter = $resamplingFilter;
+        return $this;
+    }
+
     /**
      * @return boolean
      */

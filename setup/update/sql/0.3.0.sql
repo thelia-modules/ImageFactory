@@ -1,0 +1,1 @@
+ALTER TABLE `image_factory` ADD `resampling_filter` VARCHAR(55) NOT NULL DEFAULT 'undefined' AFTER `rotation`;

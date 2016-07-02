@@ -33,6 +33,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByBackgroundOpacity($order = Criteria::ASC) Order by the background_opacity column
  * @method     ChildImageFactoryQuery orderByResizeMode($order = Criteria::ASC) Order by the resize_mode column
  * @method     ChildImageFactoryQuery orderByRotation($order = Criteria::ASC) Order by the rotation column
+ * @method     ChildImageFactoryQuery orderByResamplingFilter($order = Criteria::ASC) Order by the resampling_filter column
  * @method     ChildImageFactoryQuery orderByPrefix($order = Criteria::ASC) Order by the prefix column
  * @method     ChildImageFactoryQuery orderBySuffix($order = Criteria::ASC) Order by the suffix column
  * @method     ChildImageFactoryQuery orderByLayers($order = Criteria::ASC) Order by the layers column
@@ -57,6 +58,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByBackgroundOpacity() Group by the background_opacity column
  * @method     ChildImageFactoryQuery groupByResizeMode() Group by the resize_mode column
  * @method     ChildImageFactoryQuery groupByRotation() Group by the rotation column
+ * @method     ChildImageFactoryQuery groupByResamplingFilter() Group by the resampling_filter column
  * @method     ChildImageFactoryQuery groupByPrefix() Group by the prefix column
  * @method     ChildImageFactoryQuery groupBySuffix() Group by the suffix column
  * @method     ChildImageFactoryQuery groupByLayers() Group by the layers column
@@ -92,6 +94,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByBackgroundOpacity(int $background_opacity) Return the first ChildImageFactory filtered by the background_opacity column
  * @method     ChildImageFactory findOneByResizeMode(string $resize_mode) Return the first ChildImageFactory filtered by the resize_mode column
  * @method     ChildImageFactory findOneByRotation(int $rotation) Return the first ChildImageFactory filtered by the rotation column
+ * @method     ChildImageFactory findOneByResamplingFilter(string $resampling_filter) Return the first ChildImageFactory filtered by the resampling_filter column
  * @method     ChildImageFactory findOneByPrefix(string $prefix) Return the first ChildImageFactory filtered by the prefix column
  * @method     ChildImageFactory findOneBySuffix(string $suffix) Return the first ChildImageFactory filtered by the suffix column
  * @method     ChildImageFactory findOneByLayers(array $layers) Return the first ChildImageFactory filtered by the layers column
@@ -116,6 +119,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByBackgroundOpacity(int $background_opacity) Return ChildImageFactory objects filtered by the background_opacity column
  * @method     array findByResizeMode(string $resize_mode) Return ChildImageFactory objects filtered by the resize_mode column
  * @method     array findByRotation(int $rotation) Return ChildImageFactory objects filtered by the rotation column
+ * @method     array findByResamplingFilter(string $resampling_filter) Return ChildImageFactory objects filtered by the resampling_filter column
  * @method     array findByPrefix(string $prefix) Return ChildImageFactory objects filtered by the prefix column
  * @method     array findBySuffix(string $suffix) Return ChildImageFactory objects filtered by the suffix column
  * @method     array findByLayers(array $layers) Return ChildImageFactory objects filtered by the layers column
@@ -216,7 +220,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -746,6 +750,35 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::ROTATION, $rotation, $comparison);
+    }
+
+    /**
+     * Filter the query on the resampling_filter column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByResamplingFilter('fooValue');   // WHERE resampling_filter = 'fooValue'
+     * $query->filterByResamplingFilter('%fooValue%'); // WHERE resampling_filter LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $resamplingFilter The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByResamplingFilter($resamplingFilter = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($resamplingFilter)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $resamplingFilter)) {
+                $resamplingFilter = str_replace('*', '%', $resamplingFilter);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::RESAMPLING_FILTER, $resamplingFilter, $comparison);
     }
 
     /**
