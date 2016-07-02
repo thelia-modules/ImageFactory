@@ -28,6 +28,7 @@ use Imagine\Image\Point;
 use Imagine\Gd\Imagine as ImagineGd;
 use Imagine\Imagick\Imagine as ImagineImagick;
 use Imagine\Gmagick\Imagine as ImagineGmagick;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class FactoryResolver
@@ -156,7 +157,16 @@ class FactoryResolver
         /** @var FactoryEntity $factory */
         foreach ($this->factoryCollection as $factory) {
             if ($pathInfo->getDirname() === '/' . $factory->getDestination()) {
-                return $factory;
+                $prefix = $factory->getPrefix();
+                $suffix = $factory->getSuffix();
+                if (empty($prefix) && empty($suffix)) {
+                    return $factory;
+                }
+
+                $regex = '#^' . preg_quote($prefix . '.+' . $suffix) . '$#';
+                if (preg_match($regex, $pathInfo->getFilename())) {
+                    return $factory;
+                }
             }
         }
         return null;
@@ -236,8 +246,29 @@ class FactoryResolver
             return;
         }
 
+        // create symlink
+        if ($factory->isJustSymlink()) {
+            // create folder if not exist
+            if (!file_exists($factoryResponse->getImageDestinationPath())) {
+                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
+            }
+
+            $fs = new Filesystem();
+            $fs->symlink(
+                $factoryResponse->getImageFullSourcePath(),
+                $factoryResponse->getImageFullDestinationPath(),
+                true
+            );
+            return;
+        }
+
         // ignore process if image exist
-        if (!file_exists($factoryResponse->getImageFullDestinationPath())) {
+        if (!file_exists($factoryResponse->getImageFullDestinationPath()) || $factory->isForceRegeneration()) {
+            // create folder if not exist
+            if (!file_exists($factoryResponse->getImageDestinationPath())) {
+                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
+            }
+
             $imagine = $this->getLibrary($factory->getImagineLibraryCode());
 
             $factoryResponse->setImagine($imagine);
@@ -253,13 +284,7 @@ class FactoryResolver
 
             $factoryResponse->setImage($image);
 
-            // create folder if not exist
-            if (!file_exists($factoryResponse->getImageDestinationPath())) {
-                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
-            }
-
             $backgroundColor = $this->getBackgroundColor($factory);
-
 
             $this->applyRotation($imagine, $image, $factory, $backgroundColor);
 
@@ -274,20 +299,20 @@ class FactoryResolver
             // Todo metadata
             //$this->applyMetadata($imagine, $image, $factory, $backgroundColor);
 
-            $factoryResponse->setImageBinary($image->get(
-                $factoryResponse->getImageDestinationExtension(),
-                [
-                    'quality' => $factory->getQuality()
-                ]
-            ));
+            $options = [
+                'quality' => $factory->getQuality()
+            ];
+
+            // the GD library do not support the resampling-filter option
+            if ($factory->getResamplingFilter() !== ImageInterface::FILTER_UNDEFINED
+                && $factory->getImagineLibraryCode() !== FactoryEntity::IMAGINE_LIBRARY8_GD) {
+                $options['resampling-filter'] = $factory->getResamplingFilter();
+            }
+
+            $factoryResponse->setImageBinary($image->get($factoryResponse->getImageDestinationExtension(), $options));
 
             if ($factory->isPersist()) {
-                $image->save(
-                    $factoryResponse->getImageFullDestinationPath(),
-                    [
-                        'quality' => $factory->getQuality()
-                    ]
-                );
+                $image->save($factoryResponse->getImageFullDestinationPath(), $options);
             }
         }
 

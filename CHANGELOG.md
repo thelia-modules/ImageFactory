@@ -1,3 +1,13 @@
+# 0.3.0
+
+- #14 Fix factory resolver by url, it's possible to have a same destination for the factories who use a prefix or suffix
+- #14 Add option `just_symlink`
+- #14 Add option `disable_i18n_processing` on the smarty plugin `image_factory`
+- #14 Add support for the product sale element on the smarty plugin `image_factory`
+- #14 Add new command `image-factory:reload-factory`
+- #14 Add option `resampling_filter`
+- #14 Add new command `image-factory:generate-destination`
+
 # 0.2.5
 
 - #11 #12 Fix i18n processing for the smarty plugin

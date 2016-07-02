@@ -26,6 +26,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByCode($order = Criteria::ASC) Order by the code column
  * @method     ChildImageFactoryQuery orderBySources($order = Criteria::ASC) Order by the sources column
  * @method     ChildImageFactoryQuery orderByDestination($order = Criteria::ASC) Order by the destination column
+ * @method     ChildImageFactoryQuery orderByJustSymlink($order = Criteria::ASC) Order by the just_symlink column
  * @method     ChildImageFactoryQuery orderByWidth($order = Criteria::ASC) Order by the width column
  * @method     ChildImageFactoryQuery orderByHeight($order = Criteria::ASC) Order by the height column
  * @method     ChildImageFactoryQuery orderByQuality($order = Criteria::ASC) Order by the quality column
@@ -33,6 +34,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByBackgroundOpacity($order = Criteria::ASC) Order by the background_opacity column
  * @method     ChildImageFactoryQuery orderByResizeMode($order = Criteria::ASC) Order by the resize_mode column
  * @method     ChildImageFactoryQuery orderByRotation($order = Criteria::ASC) Order by the rotation column
+ * @method     ChildImageFactoryQuery orderByResamplingFilter($order = Criteria::ASC) Order by the resampling_filter column
  * @method     ChildImageFactoryQuery orderByPrefix($order = Criteria::ASC) Order by the prefix column
  * @method     ChildImageFactoryQuery orderBySuffix($order = Criteria::ASC) Order by the suffix column
  * @method     ChildImageFactoryQuery orderByLayers($order = Criteria::ASC) Order by the layers column
@@ -43,6 +45,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByImagineLibraryCode($order = Criteria::ASC) Order by the imagine_library_code column
  * @method     ChildImageFactoryQuery orderByImageNotFoundSource($order = Criteria::ASC) Order by the image_not_found_source column
  * @method     ChildImageFactoryQuery orderByImageNotFoundDestinationFileName($order = Criteria::ASC) Order by the image_not_found_destination_file_name column
+ * @method     ChildImageFactoryQuery orderByDisableI18nProcessing($order = Criteria::ASC) Order by the disable_i18n_processing column
  * @method     ChildImageFactoryQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildImageFactoryQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -50,6 +53,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByCode() Group by the code column
  * @method     ChildImageFactoryQuery groupBySources() Group by the sources column
  * @method     ChildImageFactoryQuery groupByDestination() Group by the destination column
+ * @method     ChildImageFactoryQuery groupByJustSymlink() Group by the just_symlink column
  * @method     ChildImageFactoryQuery groupByWidth() Group by the width column
  * @method     ChildImageFactoryQuery groupByHeight() Group by the height column
  * @method     ChildImageFactoryQuery groupByQuality() Group by the quality column
@@ -57,6 +61,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByBackgroundOpacity() Group by the background_opacity column
  * @method     ChildImageFactoryQuery groupByResizeMode() Group by the resize_mode column
  * @method     ChildImageFactoryQuery groupByRotation() Group by the rotation column
+ * @method     ChildImageFactoryQuery groupByResamplingFilter() Group by the resampling_filter column
  * @method     ChildImageFactoryQuery groupByPrefix() Group by the prefix column
  * @method     ChildImageFactoryQuery groupBySuffix() Group by the suffix column
  * @method     ChildImageFactoryQuery groupByLayers() Group by the layers column
@@ -67,6 +72,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByImagineLibraryCode() Group by the imagine_library_code column
  * @method     ChildImageFactoryQuery groupByImageNotFoundSource() Group by the image_not_found_source column
  * @method     ChildImageFactoryQuery groupByImageNotFoundDestinationFileName() Group by the image_not_found_destination_file_name column
+ * @method     ChildImageFactoryQuery groupByDisableI18nProcessing() Group by the disable_i18n_processing column
  * @method     ChildImageFactoryQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildImageFactoryQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -85,6 +91,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByCode(string $code) Return the first ChildImageFactory filtered by the code column
  * @method     ChildImageFactory findOneBySources(array $sources) Return the first ChildImageFactory filtered by the sources column
  * @method     ChildImageFactory findOneByDestination(string $destination) Return the first ChildImageFactory filtered by the destination column
+ * @method     ChildImageFactory findOneByJustSymlink(int $just_symlink) Return the first ChildImageFactory filtered by the just_symlink column
  * @method     ChildImageFactory findOneByWidth(int $width) Return the first ChildImageFactory filtered by the width column
  * @method     ChildImageFactory findOneByHeight(int $height) Return the first ChildImageFactory filtered by the height column
  * @method     ChildImageFactory findOneByQuality(int $quality) Return the first ChildImageFactory filtered by the quality column
@@ -92,6 +99,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByBackgroundOpacity(int $background_opacity) Return the first ChildImageFactory filtered by the background_opacity column
  * @method     ChildImageFactory findOneByResizeMode(string $resize_mode) Return the first ChildImageFactory filtered by the resize_mode column
  * @method     ChildImageFactory findOneByRotation(int $rotation) Return the first ChildImageFactory filtered by the rotation column
+ * @method     ChildImageFactory findOneByResamplingFilter(string $resampling_filter) Return the first ChildImageFactory filtered by the resampling_filter column
  * @method     ChildImageFactory findOneByPrefix(string $prefix) Return the first ChildImageFactory filtered by the prefix column
  * @method     ChildImageFactory findOneBySuffix(string $suffix) Return the first ChildImageFactory filtered by the suffix column
  * @method     ChildImageFactory findOneByLayers(array $layers) Return the first ChildImageFactory filtered by the layers column
@@ -102,6 +110,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByImagineLibraryCode(string $imagine_library_code) Return the first ChildImageFactory filtered by the imagine_library_code column
  * @method     ChildImageFactory findOneByImageNotFoundSource(string $image_not_found_source) Return the first ChildImageFactory filtered by the image_not_found_source column
  * @method     ChildImageFactory findOneByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return the first ChildImageFactory filtered by the image_not_found_destination_file_name column
+ * @method     ChildImageFactory findOneByDisableI18nProcessing(int $disable_i18n_processing) Return the first ChildImageFactory filtered by the disable_i18n_processing column
  * @method     ChildImageFactory findOneByCreatedAt(string $created_at) Return the first ChildImageFactory filtered by the created_at column
  * @method     ChildImageFactory findOneByUpdatedAt(string $updated_at) Return the first ChildImageFactory filtered by the updated_at column
  *
@@ -109,6 +118,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByCode(string $code) Return ChildImageFactory objects filtered by the code column
  * @method     array findBySources(array $sources) Return ChildImageFactory objects filtered by the sources column
  * @method     array findByDestination(string $destination) Return ChildImageFactory objects filtered by the destination column
+ * @method     array findByJustSymlink(int $just_symlink) Return ChildImageFactory objects filtered by the just_symlink column
  * @method     array findByWidth(int $width) Return ChildImageFactory objects filtered by the width column
  * @method     array findByHeight(int $height) Return ChildImageFactory objects filtered by the height column
  * @method     array findByQuality(int $quality) Return ChildImageFactory objects filtered by the quality column
@@ -116,6 +126,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByBackgroundOpacity(int $background_opacity) Return ChildImageFactory objects filtered by the background_opacity column
  * @method     array findByResizeMode(string $resize_mode) Return ChildImageFactory objects filtered by the resize_mode column
  * @method     array findByRotation(int $rotation) Return ChildImageFactory objects filtered by the rotation column
+ * @method     array findByResamplingFilter(string $resampling_filter) Return ChildImageFactory objects filtered by the resampling_filter column
  * @method     array findByPrefix(string $prefix) Return ChildImageFactory objects filtered by the prefix column
  * @method     array findBySuffix(string $suffix) Return ChildImageFactory objects filtered by the suffix column
  * @method     array findByLayers(array $layers) Return ChildImageFactory objects filtered by the layers column
@@ -126,6 +137,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByImagineLibraryCode(string $imagine_library_code) Return ChildImageFactory objects filtered by the imagine_library_code column
  * @method     array findByImageNotFoundSource(string $image_not_found_source) Return ChildImageFactory objects filtered by the image_not_found_source column
  * @method     array findByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return ChildImageFactory objects filtered by the image_not_found_destination_file_name column
+ * @method     array findByDisableI18nProcessing(int $disable_i18n_processing) Return ChildImageFactory objects filtered by the disable_i18n_processing column
  * @method     array findByCreatedAt(string $created_at) Return ChildImageFactory objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildImageFactory objects filtered by the updated_at column
  *
@@ -216,7 +228,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -486,6 +498,47 @@ abstract class ImageFactoryQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the just_symlink column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByJustSymlink(1234); // WHERE just_symlink = 1234
+     * $query->filterByJustSymlink(array(12, 34)); // WHERE just_symlink IN (12, 34)
+     * $query->filterByJustSymlink(array('min' => 12)); // WHERE just_symlink > 12
+     * </code>
+     *
+     * @param     mixed $justSymlink The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByJustSymlink($justSymlink = null, $comparison = null)
+    {
+        if (is_array($justSymlink)) {
+            $useMinMax = false;
+            if (isset($justSymlink['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($justSymlink['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink, $comparison);
+    }
+
+    /**
      * Filter the query on the width column
      *
      * Example usage:
@@ -746,6 +799,35 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::ROTATION, $rotation, $comparison);
+    }
+
+    /**
+     * Filter the query on the resampling_filter column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByResamplingFilter('fooValue');   // WHERE resampling_filter = 'fooValue'
+     * $query->filterByResamplingFilter('%fooValue%'); // WHERE resampling_filter LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $resamplingFilter The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByResamplingFilter($resamplingFilter = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($resamplingFilter)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $resamplingFilter)) {
+                $resamplingFilter = str_replace('*', '%', $resamplingFilter);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::RESAMPLING_FILTER, $resamplingFilter, $comparison);
     }
 
     /**
@@ -1190,6 +1272,47 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, $imageNotFoundDestinationFileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the disable_i18n_processing column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDisableI18nProcessing(1234); // WHERE disable_i18n_processing = 1234
+     * $query->filterByDisableI18nProcessing(array(12, 34)); // WHERE disable_i18n_processing IN (12, 34)
+     * $query->filterByDisableI18nProcessing(array('min' => 12)); // WHERE disable_i18n_processing > 12
+     * </code>
+     *
+     * @param     mixed $disableI18nProcessing The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByDisableI18nProcessing($disableI18nProcessing = null, $comparison = null)
+    {
+        if (is_array($disableI18nProcessing)) {
+            $useMinMax = false;
+            if (isset($disableI18nProcessing['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($disableI18nProcessing['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing, $comparison);
     }
 
     /**

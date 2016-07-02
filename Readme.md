@@ -15,7 +15,7 @@ Thank you for your understanding
 Add it in your main thelia composer.json file
 
 ```
-composer require thelia/image-factory-module:~0.2.0
+composer require thelia/image-factory-module:~0.3.0
 ```
 
 ## Usage
@@ -25,6 +25,11 @@ With Smarty
 {* With product id *}
 <ul>
   {image_factory attr=['class'=> 'example-1'] code='test' view="product" view_id="325" inner="<li>?</li>" limit=10}
+</ul>
+
+{* With product sale element id *}
+<ul>
+  {image_factory attr=['class'=> 'example-1'] code='test' view="product_sale_element" view_id="21" inner="<li>?</li>" limit=10}
 </ul>
 
 {* With image id *}
@@ -56,4 +61,29 @@ With PHP
 
     $uri = $factoryHandler->getUri($factoryCode, null, 'path/your/image');
     $uri = $factoryHandler->getUri($factoryCode, $image);
+```
+
+## Commands
+
+#### The command image-factory:generate-destination
+
+For generate all images of a specific factory
+
+```shell
+    php Thelia image-factory:generate-destination product-high,product-medium,product-small
+```
+
+With this command, the images already present on the destination paths will not be regenerated.
+It's possible to force the generation process by adding the option `--force`.
+
+```shell
+    php Thelia image-factory:generate-destination product-high,product-medium,product-small --force
+```
+
+#### The command image-factory:reload-factory
+
+For reload all factories in the cache
+
+```shell
+    php Thelia image-factory:reload-factory
 ```

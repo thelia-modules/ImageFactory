@@ -115,6 +115,111 @@ class FactoryEntity implements FactoryEntityInterface
     /** @var bool */
     protected $disableProcessGenerate = false;
 
+    /** @var bool */
+    protected $forceRegeneration = false;
+
+    /** @var string */
+    protected $resamplingFilter = ImageInterface::FILTER_UNDEFINED;
+
+    /** @var bool */
+    protected $disableI18nProcessing = false;
+
+    /** @var bool */
+    protected $justSymlink = false;
+
+    /**
+     * @return boolean
+     */
+    public function isJustSymlink()
+    {
+        return $this->justSymlink;
+    }
+
+    /**
+     * @param boolean $justSymlink
+     * @return FactoryEntity
+     */
+    public function setJustSymlink($justSymlink)
+    {
+        $this->justSymlink = (bool) $justSymlink;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDisableI18nProcessing()
+    {
+        return $this->disableI18nProcessing;
+    }
+
+    /**
+     * @param boolean $disableI18nProcessing
+     * @return FactoryEntity
+     */
+    public function setDisableI18nProcessing($disableI18nProcessing)
+    {
+        $this->disableI18nProcessing = (bool) $disableI18nProcessing;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResamplingFilter()
+    {
+        return $this->resamplingFilter;
+    }
+
+    /**
+     * @param string $resamplingFilter
+     * @return FactoryEntity
+     */
+    public function setResamplingFilter($resamplingFilter)
+    {
+        if (!in_array($resamplingFilter, [
+            ImageInterface::FILTER_UNDEFINED,
+            ImageInterface::FILTER_POINT,
+            ImageInterface::FILTER_BOX,
+            ImageInterface::FILTER_TRIANGLE,
+            ImageInterface::FILTER_HERMITE,
+            ImageInterface::FILTER_HANNING,
+            ImageInterface::FILTER_HAMMING,
+            ImageInterface::FILTER_BLACKMAN,
+            ImageInterface::FILTER_GAUSSIAN,
+            ImageInterface::FILTER_QUADRATIC,
+            ImageInterface::FILTER_CUBIC,
+            ImageInterface::FILTER_CATROM,
+            ImageInterface::FILTER_MITCHELL,
+            ImageInterface::FILTER_LANCZOS,
+            ImageInterface::FILTER_BESSEL,
+            ImageInterface::FILTER_SINC
+        ])) {
+            throw new \InvalidArgumentException('Invalid argument resampling filter');
+        }
+
+        $this->resamplingFilter = $resamplingFilter;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isForceRegeneration()
+    {
+        return $this->forceRegeneration;
+    }
+
+    /**
+     * @param boolean $forceRegeneration
+     * @return FactoryEntity
+     */
+    public function setForceRegeneration($forceRegeneration)
+    {
+        $this->forceRegeneration = $forceRegeneration;
+        return $this;
+    }
+
     /**
      * @return boolean
      */

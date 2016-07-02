@@ -159,6 +159,16 @@ class FactoryHandler
     }
 
     /**
+     * @since 0.3.0
+     */
+    public function reloadFactories()
+    {
+        $this->clearFactoriesInCache();
+        $this->factoryResolver = null;
+        $this->getFactoryResolver();
+    }
+
+    /**
      * @param string $class
      * @param string $fileName
      * @return string
@@ -221,6 +231,7 @@ class FactoryHandler
 
     /**
      * @return FactoryEntityCollection
+     * @throws \Exception
      */
     protected function getPropelFactories()
     {
@@ -249,6 +260,8 @@ class FactoryHandler
                 ->setDestination($imageFactory->getDestination())
                 ->setBackgroundColor($imageFactory->getBackgroundColor())
                 ->setBackgroundOpacity($imageFactory->getBackgroundOpacity())
+                ->setDisableI18nProcessing($imageFactory->getDisableI18nProcessing())
+                ->setJustSymlink($imageFactory->getJustSymlink())
             ;
 
             $imageNotFoundSource = $imageFactory->getImageNotFoundSource();
@@ -261,11 +274,20 @@ class FactoryHandler
                 $factory->setImageNotFoundDestinationFileName($imageNotFoundDestinationFileName);
             }
 
+            $resamplingFilter = $imageFactory->getResamplingFilter();
+            if (!empty($resamplingFilter)) {
+                $factory->setResamplingFilter($resamplingFilter);
+            }
+
             // Todo Add effects, filter, srcset, redirect, http source
 
             $sources = [];
             foreach ($imageFactory->getSources() as $source) {
-                $sources[] = realpath($source) ? $source : THELIA_ROOT . $source;
+                $sources[] = $path = realpath($source) ? realpath($source) : realpath(THELIA_ROOT . $source);
+
+                if ($path === false) {
+                    throw new \Exception('Invalid source "' . $source . '" for factory ' . $factory->getCode());
+                }
             }
             $factory->setSources($sources);
 
