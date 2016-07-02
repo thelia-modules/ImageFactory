@@ -15,7 +15,7 @@ Thank you for your understanding
 Add it in your main thelia composer.json file
 
 ```
-composer require thelia/image-factory-module:~0.2.0
+composer require thelia/image-factory-module:~0.3.0
 ```
 
 ## Usage

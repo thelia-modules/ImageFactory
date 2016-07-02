@@ -46,19 +46,25 @@ class ImageFactory extends BaseModule
      */
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
     {
-        $finder = (new Finder())
-            ->files()
-            ->name('#.*?\.sql#')
-            ->in($this->getSetupDir() . 'update'. DS . 'sql')
-        ;
+        try {
+            ImageFactoryQuery::create()->findOne();
 
-        $database = new Database($con);
+            $finder = (new Finder())
+                ->files()
+                ->name('#.*?\.sql#')
+                ->in($this->getSetupDir() . 'update'. DS . 'sql')
+            ;
 
-        /** @var SplFileInfo $updateSQLFile */
-        foreach ($finder as $updateSQLFile) {
-            if (version_compare($currentVersion, str_replace('.sql', '', $updateSQLFile->getFilename()), '<')) {
-                $database->insertSql(null, [$updateSQLFile->getPathname()]);
+            $database = new Database($con);
+
+            /** @var SplFileInfo $updateSQLFile */
+            foreach ($finder as $updateSQLFile) {
+                if (version_compare($currentVersion, str_replace('.sql', '', $updateSQLFile->getFilename()), '<')) {
+                    $database->insertSql(null, [$updateSQLFile->getPathname()]);
+                }
             }
+        } catch (\Exception $e) {
+            // no need
         }
     }
 
