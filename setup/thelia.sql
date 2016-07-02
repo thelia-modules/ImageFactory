@@ -33,6 +33,7 @@ CREATE TABLE `image_factory`
     `imagine_library_code` VARCHAR(255) DEFAULT 'gd' COMMENT 'Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants.',
     `image_not_found_source` VARCHAR(255),
     `image_not_found_destination_file_name` VARCHAR(255),
+    `disable_i18n_processing` TINYINT DEFAULT 0,
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),

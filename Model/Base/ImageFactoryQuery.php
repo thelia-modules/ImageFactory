@@ -44,6 +44,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByImagineLibraryCode($order = Criteria::ASC) Order by the imagine_library_code column
  * @method     ChildImageFactoryQuery orderByImageNotFoundSource($order = Criteria::ASC) Order by the image_not_found_source column
  * @method     ChildImageFactoryQuery orderByImageNotFoundDestinationFileName($order = Criteria::ASC) Order by the image_not_found_destination_file_name column
+ * @method     ChildImageFactoryQuery orderByDisableI18nProcessing($order = Criteria::ASC) Order by the disable_i18n_processing column
  * @method     ChildImageFactoryQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildImageFactoryQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -69,6 +70,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByImagineLibraryCode() Group by the imagine_library_code column
  * @method     ChildImageFactoryQuery groupByImageNotFoundSource() Group by the image_not_found_source column
  * @method     ChildImageFactoryQuery groupByImageNotFoundDestinationFileName() Group by the image_not_found_destination_file_name column
+ * @method     ChildImageFactoryQuery groupByDisableI18nProcessing() Group by the disable_i18n_processing column
  * @method     ChildImageFactoryQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildImageFactoryQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -105,6 +107,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByImagineLibraryCode(string $imagine_library_code) Return the first ChildImageFactory filtered by the imagine_library_code column
  * @method     ChildImageFactory findOneByImageNotFoundSource(string $image_not_found_source) Return the first ChildImageFactory filtered by the image_not_found_source column
  * @method     ChildImageFactory findOneByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return the first ChildImageFactory filtered by the image_not_found_destination_file_name column
+ * @method     ChildImageFactory findOneByDisableI18nProcessing(int $disable_i18n_processing) Return the first ChildImageFactory filtered by the disable_i18n_processing column
  * @method     ChildImageFactory findOneByCreatedAt(string $created_at) Return the first ChildImageFactory filtered by the created_at column
  * @method     ChildImageFactory findOneByUpdatedAt(string $updated_at) Return the first ChildImageFactory filtered by the updated_at column
  *
@@ -130,6 +133,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByImagineLibraryCode(string $imagine_library_code) Return ChildImageFactory objects filtered by the imagine_library_code column
  * @method     array findByImageNotFoundSource(string $image_not_found_source) Return ChildImageFactory objects filtered by the image_not_found_source column
  * @method     array findByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return ChildImageFactory objects filtered by the image_not_found_destination_file_name column
+ * @method     array findByDisableI18nProcessing(int $disable_i18n_processing) Return ChildImageFactory objects filtered by the disable_i18n_processing column
  * @method     array findByCreatedAt(string $created_at) Return ChildImageFactory objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildImageFactory objects filtered by the updated_at column
  *
@@ -220,7 +224,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1223,6 +1227,47 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, $imageNotFoundDestinationFileName, $comparison);
+    }
+
+    /**
+     * Filter the query on the disable_i18n_processing column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDisableI18nProcessing(1234); // WHERE disable_i18n_processing = 1234
+     * $query->filterByDisableI18nProcessing(array(12, 34)); // WHERE disable_i18n_processing IN (12, 34)
+     * $query->filterByDisableI18nProcessing(array('min' => 12)); // WHERE disable_i18n_processing > 12
+     * </code>
+     *
+     * @param     mixed $disableI18nProcessing The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByDisableI18nProcessing($disableI18nProcessing = null, $comparison = null)
+    {
+        if (is_array($disableI18nProcessing)) {
+            $useMinMax = false;
+            if (isset($disableI18nProcessing['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($disableI18nProcessing['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $disableI18nProcessing, $comparison);
     }
 
     /**

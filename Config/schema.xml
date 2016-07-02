@@ -28,6 +28,7 @@
         <column name="imagine_library_code" type="VARCHAR" defaultValue="gd" description="Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants." />
         <column name="image_not_found_source" size="255" type="VARCHAR" />
         <column name="image_not_found_destination_file_name" size="255" type="VARCHAR" />
+        <column name="disable_i18n_processing" type="TINYINT" defaultValue="0" />
 
         <behavior name="timestampable" />
 

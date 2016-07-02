@@ -42,6 +42,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
     const ARG_ATTR = 'attr';
     const ARG_INNER = 'inner';
     const ARG_OUT = 'out';
+    const ARG_DISABLE_I18N_PROCESSING = 'disable_i18n_processing';
 
     /** @var FactoryHandler */
     protected $factoryHandler;
@@ -84,6 +85,10 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         $params[self::ARG_ATTR] = !isset($params[self::ARG_ATTR]) ? [] : $params[self::ARG_ATTR];
 
         $factory = $this->getFactoryResolver()->getByCode($this->getParam($params, self::ARG_CODE));
+
+        if (null !== $disableI18nProcessing = $this->getParam($params, self::ARG_DISABLE_I18N_PROCESSING)) {
+            $factory->setDisableI18nProcessing((bool) $disableI18nProcessing);
+        }
 
         if (null !== $this->getParam($params, self::ARG_FILE_NAME)) {
             $images = $this->resolveByFileName($factory, $params);
@@ -151,7 +156,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
     {
         $ids = explode(',', $this->getParam($params, self::ARG_IMAGE_ID));
 
-        $modelCriteria = $this->getModelCriteriaByView($this->getParam($params, self::ARG_VIEW));
+        $modelCriteria = $this->getModelCriteriaByView($this->getParam($params, self::ARG_VIEW), $factory);
         $methodName = 'filterById';
 
         $modelCriteria->$methodName($ids,  Criteria::IN);
@@ -176,7 +181,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         $view = $this->getParam($params, self::ARG_VIEW);
         $ids = explode(',', $this->getParam($params, self::ARG_VIEW_ID));
 
-        $modelCriteria = $this->getModelCriteriaByView($view);
+        $modelCriteria = $this->getModelCriteriaByView($view, $factory);
         $methodName = $this->getPropelMethodName($view);
 
         if ($view === 'product_sale_element') {
@@ -252,9 +257,10 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
     /**
      * @param string $view
-     * @return \Thelia\Model\ProductQuery
+     * @param FactoryEntity $factory
+     * @return \Thelia\Model\ProductImageQuery
      */
-    protected function getModelCriteriaByView($view)
+    protected function getModelCriteriaByView($view, FactoryEntity $factory)
     {
         if ($view === 'product_sale_element') {
             /** @var \Thelia\Model\ProductImageQuery $classQuery */
@@ -281,7 +287,9 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $instance = $classQuery::create();
 
-        ModelCriteriaTools::getFrontEndI18n($instance, static::$locale, ['TITLE'], null, 'ID', true);
+        if (!$factory->isDisableI18nProcessing()) {
+            ModelCriteriaTools::getFrontEndI18n($instance, static::$locale, ['TITLE'], null, 'ID', true);
+        }
 
         if ($view === 'product_sale_element') {
             $instance->useProductSaleElementsProductImageQuery(ProductSaleElementsProductImageTableMap::TABLE_NAME);

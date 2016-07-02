@@ -121,6 +121,27 @@ class FactoryEntity implements FactoryEntityInterface
     /** @var string */
     protected $resamplingFilter = ImageInterface::FILTER_UNDEFINED;
 
+    /** @var bool */
+    protected $disableI18nProcessing = false;
+
+    /**
+     * @return boolean
+     */
+    public function isDisableI18nProcessing()
+    {
+        return $this->disableI18nProcessing;
+    }
+
+    /**
+     * @param boolean $disableI18nProcessing
+     * @return FactoryEntity
+     */
+    public function setDisableI18nProcessing($disableI18nProcessing)
+    {
+        $this->disableI18nProcessing = (bool) $disableI18nProcessing;
+        return $this;
+    }
+
     /**
      * @return string
      */

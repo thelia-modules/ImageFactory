@@ -259,6 +259,7 @@ class FactoryHandler
                 ->setDestination($imageFactory->getDestination())
                 ->setBackgroundColor($imageFactory->getBackgroundColor())
                 ->setBackgroundOpacity($imageFactory->getBackgroundOpacity())
+                ->setDisableI18nProcessing($imageFactory->getDisableI18nProcessing())
             ;
 
             $imageNotFoundSource = $imageFactory->getImageNotFoundSource();

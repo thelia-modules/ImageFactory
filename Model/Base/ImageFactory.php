@@ -227,6 +227,13 @@ abstract class ImageFactory implements ActiveRecordInterface
     protected $image_not_found_destination_file_name;
 
     /**
+     * The value for the disable_i18n_processing field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $disable_i18n_processing;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -289,6 +296,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->interlace = 'none';
         $this->persist = true;
         $this->imagine_library_code = 'gd';
+        $this->disable_i18n_processing = 0;
     }
 
     /**
@@ -863,6 +871,17 @@ abstract class ImageFactory implements ActiveRecordInterface
     {
 
         return $this->image_not_found_destination_file_name;
+    }
+
+    /**
+     * Get the [disable_i18n_processing] column value.
+     *
+     * @return   int
+     */
+    public function getDisableI18nProcessing()
+    {
+
+        return $this->disable_i18n_processing;
     }
 
     /**
@@ -1500,6 +1519,27 @@ abstract class ImageFactory implements ActiveRecordInterface
     } // setImageNotFoundDestinationFileName()
 
     /**
+     * Set the value of [disable_i18n_processing] column.
+     *
+     * @param      int $v new value
+     * @return   \ImageFactory\Model\ImageFactory The current object (for fluent API support)
+     */
+    public function setDisableI18nProcessing($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->disable_i18n_processing !== $v) {
+            $this->disable_i18n_processing = $v;
+            $this->modifiedColumns[ImageFactoryTableMap::DISABLE_I18N_PROCESSING] = true;
+        }
+
+
+        return $this;
+    } // setDisableI18nProcessing()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
@@ -1584,6 +1624,10 @@ abstract class ImageFactory implements ActiveRecordInterface
             }
 
             if ($this->imagine_library_code !== 'gd') {
+                return false;
+            }
+
+            if ($this->disable_i18n_processing !== 0) {
                 return false;
             }
 
@@ -1684,13 +1728,16 @@ abstract class ImageFactory implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundDestinationFileName', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_not_found_destination_file_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('DisableI18nProcessing', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->disable_i18n_processing = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1703,7 +1750,7 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 24; // 24 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 25; // 25 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \ImageFactory\Model\ImageFactory object", 0, $e);
@@ -2008,6 +2055,9 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME)) {
             $modifiedColumns[':p' . $index++]  = 'IMAGE_NOT_FOUND_DESTINATION_FILE_NAME';
         }
+        if ($this->isColumnModified(ImageFactoryTableMap::DISABLE_I18N_PROCESSING)) {
+            $modifiedColumns[':p' . $index++]  = 'DISABLE_I18N_PROCESSING';
+        }
         if ($this->isColumnModified(ImageFactoryTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
@@ -2090,6 +2140,9 @@ abstract class ImageFactory implements ActiveRecordInterface
                         break;
                     case 'IMAGE_NOT_FOUND_DESTINATION_FILE_NAME':
                         $stmt->bindValue($identifier, $this->image_not_found_destination_file_name, PDO::PARAM_STR);
+                        break;
+                    case 'DISABLE_I18N_PROCESSING':
+                        $stmt->bindValue($identifier, $this->disable_i18n_processing, PDO::PARAM_INT);
                         break;
                     case 'CREATED_AT':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -2226,9 +2279,12 @@ abstract class ImageFactory implements ActiveRecordInterface
                 return $this->getImageNotFoundDestinationFileName();
                 break;
             case 22:
-                return $this->getCreatedAt();
+                return $this->getDisableI18nProcessing();
                 break;
             case 23:
+                return $this->getCreatedAt();
+                break;
+            case 24:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -2282,8 +2338,9 @@ abstract class ImageFactory implements ActiveRecordInterface
             $keys[19] => $this->getImagineLibraryCode(),
             $keys[20] => $this->getImageNotFoundSource(),
             $keys[21] => $this->getImageNotFoundDestinationFileName(),
-            $keys[22] => $this->getCreatedAt(),
-            $keys[23] => $this->getUpdatedAt(),
+            $keys[22] => $this->getDisableI18nProcessing(),
+            $keys[23] => $this->getCreatedAt(),
+            $keys[24] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2411,9 +2468,12 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->setImageNotFoundDestinationFileName($value);
                 break;
             case 22:
-                $this->setCreatedAt($value);
+                $this->setDisableI18nProcessing($value);
                 break;
             case 23:
+                $this->setCreatedAt($value);
+                break;
+            case 24:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2462,8 +2522,9 @@ abstract class ImageFactory implements ActiveRecordInterface
         if (array_key_exists($keys[19], $arr)) $this->setImagineLibraryCode($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setImageNotFoundSource($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setImageNotFoundDestinationFileName($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setCreatedAt($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setUpdatedAt($arr[$keys[23]]);
+        if (array_key_exists($keys[22], $arr)) $this->setDisableI18nProcessing($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setCreatedAt($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setUpdatedAt($arr[$keys[24]]);
     }
 
     /**
@@ -2497,6 +2558,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE)) $criteria->add(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE, $this->imagine_library_code);
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE)) $criteria->add(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE, $this->image_not_found_source);
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME)) $criteria->add(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, $this->image_not_found_destination_file_name);
+        if ($this->isColumnModified(ImageFactoryTableMap::DISABLE_I18N_PROCESSING)) $criteria->add(ImageFactoryTableMap::DISABLE_I18N_PROCESSING, $this->disable_i18n_processing);
         if ($this->isColumnModified(ImageFactoryTableMap::CREATED_AT)) $criteria->add(ImageFactoryTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(ImageFactoryTableMap::UPDATED_AT)) $criteria->add(ImageFactoryTableMap::UPDATED_AT, $this->updated_at);
 
@@ -2583,6 +2645,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $copyObj->setImagineLibraryCode($this->getImagineLibraryCode());
         $copyObj->setImageNotFoundSource($this->getImageNotFoundSource());
         $copyObj->setImageNotFoundDestinationFileName($this->getImageNotFoundDestinationFileName());
+        $copyObj->setDisableI18nProcessing($this->getDisableI18nProcessing());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -2899,6 +2962,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->imagine_library_code = null;
         $this->image_not_found_source = null;
         $this->image_not_found_destination_file_name = null;
+        $this->disable_i18n_processing = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
