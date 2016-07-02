@@ -28,6 +28,7 @@ use Imagine\Image\Point;
 use Imagine\Gd\Imagine as ImagineGd;
 use Imagine\Imagick\Imagine as ImagineImagick;
 use Imagine\Gmagick\Imagine as ImagineGmagick;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class FactoryResolver
@@ -236,8 +237,29 @@ class FactoryResolver
             return;
         }
 
+        // create symlink
+        if ($factory->isJustSymlink()) {
+            // create folder if not exist
+            if (!file_exists($factoryResponse->getImageDestinationPath())) {
+                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
+            }
+
+            $fs = new Filesystem();
+            $fs->symlink(
+                $factoryResponse->getImageFullSourcePath(),
+                $factoryResponse->getImageFullDestinationPath(),
+                true
+            );
+            return;
+        }
+
         // ignore process if image exist
         if (!file_exists($factoryResponse->getImageFullDestinationPath()) || $factory->isForceRegeneration()) {
+            // create folder if not exist
+            if (!file_exists($factoryResponse->getImageDestinationPath())) {
+                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
+            }
+
             $imagine = $this->getLibrary($factory->getImagineLibraryCode());
 
             $factoryResponse->setImagine($imagine);
@@ -253,13 +275,7 @@ class FactoryResolver
 
             $factoryResponse->setImage($image);
 
-            // create folder if not exist
-            if (!file_exists($factoryResponse->getImageDestinationPath())) {
-                mkdir($factoryResponse->getImageDestinationPath(), 0777, true);
-            }
-
             $backgroundColor = $this->getBackgroundColor($factory);
-
 
             $this->applyRotation($imagine, $image, $factory, $backgroundColor);
 

@@ -10,6 +10,7 @@
         <column name="description" type="CLOB" />
         <column name="sources" required="true" type="ARRAY" />
         <column name="destination" size="255" type="VARCHAR" />
+        <column name="just_symlink" type="TINYINT" defaultValue="0" />
         <column name="width" required="true" type="INTEGER" />
         <column name="height" required="true" type="INTEGER" />
         <column name="quality" required="true" type="TINYINT" defaultValue="75" />

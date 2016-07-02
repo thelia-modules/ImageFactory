@@ -124,6 +124,27 @@ class FactoryEntity implements FactoryEntityInterface
     /** @var bool */
     protected $disableI18nProcessing = false;
 
+    /** @var bool */
+    protected $justSymlink = false;
+
+    /**
+     * @return boolean
+     */
+    public function isJustSymlink()
+    {
+        return $this->justSymlink;
+    }
+
+    /**
+     * @param boolean $justSymlink
+     * @return FactoryEntity
+     */
+    public function setJustSymlink($justSymlink)
+    {
+        $this->justSymlink = (bool) $justSymlink;
+        return $this;
+    }
+
     /**
      * @return boolean
      */

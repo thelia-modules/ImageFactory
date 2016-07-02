@@ -15,6 +15,7 @@ CREATE TABLE `image_factory`
     `code` VARCHAR(255) NOT NULL,
     `sources` TEXT NOT NULL,
     `destination` VARCHAR(255),
+    `just_symlink` TINYINT DEFAULT 0,
     `width` INTEGER NOT NULL,
     `height` INTEGER NOT NULL,
     `quality` TINYINT DEFAULT 75 NOT NULL,

@@ -26,6 +26,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByCode($order = Criteria::ASC) Order by the code column
  * @method     ChildImageFactoryQuery orderBySources($order = Criteria::ASC) Order by the sources column
  * @method     ChildImageFactoryQuery orderByDestination($order = Criteria::ASC) Order by the destination column
+ * @method     ChildImageFactoryQuery orderByJustSymlink($order = Criteria::ASC) Order by the just_symlink column
  * @method     ChildImageFactoryQuery orderByWidth($order = Criteria::ASC) Order by the width column
  * @method     ChildImageFactoryQuery orderByHeight($order = Criteria::ASC) Order by the height column
  * @method     ChildImageFactoryQuery orderByQuality($order = Criteria::ASC) Order by the quality column
@@ -52,6 +53,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByCode() Group by the code column
  * @method     ChildImageFactoryQuery groupBySources() Group by the sources column
  * @method     ChildImageFactoryQuery groupByDestination() Group by the destination column
+ * @method     ChildImageFactoryQuery groupByJustSymlink() Group by the just_symlink column
  * @method     ChildImageFactoryQuery groupByWidth() Group by the width column
  * @method     ChildImageFactoryQuery groupByHeight() Group by the height column
  * @method     ChildImageFactoryQuery groupByQuality() Group by the quality column
@@ -89,6 +91,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByCode(string $code) Return the first ChildImageFactory filtered by the code column
  * @method     ChildImageFactory findOneBySources(array $sources) Return the first ChildImageFactory filtered by the sources column
  * @method     ChildImageFactory findOneByDestination(string $destination) Return the first ChildImageFactory filtered by the destination column
+ * @method     ChildImageFactory findOneByJustSymlink(int $just_symlink) Return the first ChildImageFactory filtered by the just_symlink column
  * @method     ChildImageFactory findOneByWidth(int $width) Return the first ChildImageFactory filtered by the width column
  * @method     ChildImageFactory findOneByHeight(int $height) Return the first ChildImageFactory filtered by the height column
  * @method     ChildImageFactory findOneByQuality(int $quality) Return the first ChildImageFactory filtered by the quality column
@@ -115,6 +118,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByCode(string $code) Return ChildImageFactory objects filtered by the code column
  * @method     array findBySources(array $sources) Return ChildImageFactory objects filtered by the sources column
  * @method     array findByDestination(string $destination) Return ChildImageFactory objects filtered by the destination column
+ * @method     array findByJustSymlink(int $just_symlink) Return ChildImageFactory objects filtered by the just_symlink column
  * @method     array findByWidth(int $width) Return ChildImageFactory objects filtered by the width column
  * @method     array findByHeight(int $height) Return ChildImageFactory objects filtered by the height column
  * @method     array findByQuality(int $quality) Return ChildImageFactory objects filtered by the quality column
@@ -224,7 +228,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -491,6 +495,47 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::DESTINATION, $destination, $comparison);
+    }
+
+    /**
+     * Filter the query on the just_symlink column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByJustSymlink(1234); // WHERE just_symlink = 1234
+     * $query->filterByJustSymlink(array(12, 34)); // WHERE just_symlink IN (12, 34)
+     * $query->filterByJustSymlink(array('min' => 12)); // WHERE just_symlink > 12
+     * </code>
+     *
+     * @param     mixed $justSymlink The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByJustSymlink($justSymlink = null, $comparison = null)
+    {
+        if (is_array($justSymlink)) {
+            $useMinMax = false;
+            if (isset($justSymlink['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($justSymlink['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::JUST_SYMLINK, $justSymlink, $comparison);
     }
 
     /**

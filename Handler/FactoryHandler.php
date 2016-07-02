@@ -231,6 +231,7 @@ class FactoryHandler
 
     /**
      * @return FactoryEntityCollection
+     * @throws \Exception
      */
     protected function getPropelFactories()
     {
@@ -260,6 +261,7 @@ class FactoryHandler
                 ->setBackgroundColor($imageFactory->getBackgroundColor())
                 ->setBackgroundOpacity($imageFactory->getBackgroundOpacity())
                 ->setDisableI18nProcessing($imageFactory->getDisableI18nProcessing())
+                ->setJustSymlink($imageFactory->getJustSymlink())
             ;
 
             $imageNotFoundSource = $imageFactory->getImageNotFoundSource();
@@ -281,7 +283,11 @@ class FactoryHandler
 
             $sources = [];
             foreach ($imageFactory->getSources() as $source) {
-                $sources[] = realpath($source) ? realpath($source) : realpath(THELIA_ROOT . $source);
+                $sources[] = $path = realpath($source) ? realpath($source) : realpath(THELIA_ROOT . $source);
+
+                if ($path === false) {
+                    throw new \Exception('Invalid source "' . $source . '" for factory ' . $factory->getCode());
+                }
             }
             $factory->setSources($sources);
 

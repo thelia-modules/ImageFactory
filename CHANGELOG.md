@@ -1,6 +1,7 @@
 # 0.3.0
 
-- #14 Add option disable_i18n_processing on the smarty plugin `image_factory`
+- #14 Add option `just_symlink`
+- #14 Add option `disable_i18n_processing` on the smarty plugin `image_factory`
 - #14 Add support for the product sale element on the smarty plugin `image_factory`
 - #14 Add new command `image-factory:reload-factory`
 - #14 Add option `resampling_filter`
