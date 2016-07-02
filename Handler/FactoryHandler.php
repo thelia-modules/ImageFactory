@@ -281,7 +281,7 @@ class FactoryHandler
 
             $sources = [];
             foreach ($imageFactory->getSources() as $source) {
-                $sources[] = realpath($source) ? $source : THELIA_ROOT . $source;
+                $sources[] = realpath($source) ? realpath($source) : realpath(THELIA_ROOT . $source);
             }
             $factory->setSources($sources);
 

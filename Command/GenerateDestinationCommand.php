@@ -86,11 +86,9 @@ class GenerateDestinationCommand extends ContainerAwareCommand
     {
         $finder = new Finder();
         foreach ($factory->getSources() as $source) {
-            $path = $factory->getBaseSourcePath() . $source;
+            $files = $finder->files()->in($source);
 
-            $files = $finder->files()->in($path);
-
-            $output->writeln('<info>' . $files->count() . ' images found in ' . $path . '</info>');
+            $output->writeln('<info>' . $files->count() . ' images found in ' . $source . '</info>');
 
             $progress = new ProgressBar($output, $files->count());
             $progress->setFormat('debug');
