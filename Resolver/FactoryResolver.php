@@ -157,7 +157,16 @@ class FactoryResolver
         /** @var FactoryEntity $factory */
         foreach ($this->factoryCollection as $factory) {
             if ($pathInfo->getDirname() === '/' . $factory->getDestination()) {
-                return $factory;
+                $prefix = $factory->getPrefix();
+                $suffix = $factory->getSuffix();
+                if (empty($prefix) && empty($suffix)) {
+                    return $factory;
+                }
+
+                $regex = '#^' . preg_quote($prefix . '.+' . $suffix) . '$#';
+                if (preg_match($regex, $pathInfo->getFilename())) {
+                    return $factory;
+                }
             }
         }
         return null;

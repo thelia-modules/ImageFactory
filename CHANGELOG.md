@@ -1,5 +1,6 @@
 # 0.3.0
 
+- #14 Fix factory resolver by url, it's possible to have a same destination for the factories who use a prefix or suffix
 - #14 Add option `just_symlink`
 - #14 Add option `disable_i18n_processing` on the smarty plugin `image_factory`
 - #14 Add support for the product sale element on the smarty plugin `image_factory`
