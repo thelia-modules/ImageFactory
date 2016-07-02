@@ -1,3 +1,7 @@
+# 0.3.0
+
+- #14 Add new command `image-factory:generate-destination`
+
 # 0.2.5
 
 - #11 #12 Fix i18n processing for the smarty plugin

@@ -115,6 +115,27 @@ class FactoryEntity implements FactoryEntityInterface
     /** @var bool */
     protected $disableProcessGenerate = false;
 
+    /** @var bool */
+    protected $forceRegeneration = false;
+
+    /**
+     * @return boolean
+     */
+    public function isForceRegeneration()
+    {
+        return $this->forceRegeneration;
+    }
+
+    /**
+     * @param boolean $forceRegeneration
+     * @return FactoryEntity
+     */
+    public function setForceRegeneration($forceRegeneration)
+    {
+        $this->forceRegeneration = $forceRegeneration;
+        return $this;
+    }
+
     /**
      * @return boolean
      */

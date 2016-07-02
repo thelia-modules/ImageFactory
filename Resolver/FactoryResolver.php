@@ -237,7 +237,7 @@ class FactoryResolver
         }
 
         // ignore process if image exist
-        if (!file_exists($factoryResponse->getImageFullDestinationPath())) {
+        if (!file_exists($factoryResponse->getImageFullDestinationPath()) || $factory->isForceRegeneration()) {
             $imagine = $this->getLibrary($factory->getImagineLibraryCode());
 
             $factoryResponse->setImagine($imagine);

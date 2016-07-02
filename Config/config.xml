@@ -24,6 +24,10 @@
         </service>
     </services>
 
+    <commands>
+        <command class="ImageFactory\Command\GenerateDestinationCommand" />
+    </commands>
+
     <!--
     <hooks>
         <hook id="image.factory.config" class="ImageFactory\Hook\ConfigurationHook" scope="request">

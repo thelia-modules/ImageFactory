@@ -57,3 +57,20 @@ With PHP
     $uri = $factoryHandler->getUri($factoryCode, null, 'path/your/image');
     $uri = $factoryHandler->getUri($factoryCode, $image);
 ```
+
+## Commands
+
+#### The command image-factory:generate-destination
+
+For generate all images of a specific factory
+
+```shell
+    php Thelia image-factory:generate-destination product-high,product-medium,product-small
+```
+
+With this command, the images already present on the destination paths will not be regenerated.
+It's possible to force the generation process by adding the option `--force`.
+
+```shell
+    php Thelia image-factory:generate-destination product-high,product-medium,product-small --force
+```
