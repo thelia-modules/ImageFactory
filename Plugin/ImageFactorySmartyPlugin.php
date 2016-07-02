@@ -17,6 +17,7 @@ use ImageFactory\Util\PathInfo;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Core\HttpFoundation\Request;
+use Thelia\Model\Map\ProductSaleElementsProductImageTableMap;
 use Thelia\Model\Tools\ModelCriteriaTools;
 use Thelia\Tools\URL;
 use TheliaSmarty\Template\AbstractSmartyPlugin;
@@ -178,7 +179,15 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         $modelCriteria = $this->getModelCriteriaByView($view);
         $methodName = $this->getPropelMethodName($view);
 
-        $modelCriteria->$methodName($ids,  Criteria::IN);
+        if ($view === 'product_sale_element') {
+            $modelCriteria->addJoinCondition(
+                ProductSaleElementsProductImageTableMap::TABLE_NAME,
+                ProductSaleElementsProductImageTableMap::PRODUCT_SALE_ELEMENTS_ID . ' IN (?)',
+                implode(',', $ids)
+            );
+        } else {
+            $modelCriteria->$methodName($ids,  Criteria::IN);
+        }
 
         if (null !== $limit = $this->getParam($params, self::ARG_LIMIT)) {
             $modelCriteria->limit($limit);
@@ -247,10 +256,17 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
      */
     protected function getModelCriteriaByView($view)
     {
-        /** @var \Thelia\Model\ProductQuery $classQuery */
-        $classQuery = '\Thelia\Model\\' . ucfirst($view) . 'ImageQuery';
-        /** @var \Thelia\Model\Product $classModel */
-        $classModel = '\Thelia\Model\\' . ucfirst($view) . 'Image';
+        if ($view === 'product_sale_element') {
+            /** @var \Thelia\Model\ProductImageQuery $classQuery */
+            $classQuery = '\Thelia\Model\ProductImageQuery';
+            /** @var \Thelia\Model\ProductImage $classModel */
+            $classModel = '\Thelia\Model\ProductImage';
+        } else {
+            /** @var \Thelia\Model\ProductImageQuery $classQuery */
+            $classQuery = '\Thelia\Model\\' . ucfirst($view) . 'ImageQuery';
+            /** @var \Thelia\Model\ProductImage $classModel */
+            $classModel = '\Thelia\Model\\' . ucfirst($view) . 'Image';
+        }
 
         if (!class_exists($classQuery) || !method_exists($classModel, 'getFile')) {
             throw new \InvalidArgumentException('invalid argument view');
@@ -266,6 +282,10 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
         $instance = $classQuery::create();
 
         ModelCriteriaTools::getFrontEndI18n($instance, static::$locale, ['TITLE'], null, 'ID', true);
+
+        if ($view === 'product_sale_element') {
+            $instance->useProductSaleElementsProductImageQuery(ProductSaleElementsProductImageTableMap::TABLE_NAME);
+        }
 
         return $instance;
     }

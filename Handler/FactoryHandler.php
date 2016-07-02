@@ -159,6 +159,16 @@ class FactoryHandler
     }
 
     /**
+     * @since 0.3.0
+     */
+    public function reloadFactories()
+    {
+        $this->clearFactoriesInCache();
+        $this->factoryResolver = null;
+        $this->getFactoryResolver();
+    }
+
+    /**
      * @param string $class
      * @param string $fileName
      * @return string

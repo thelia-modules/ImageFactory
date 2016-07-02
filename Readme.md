@@ -27,6 +27,11 @@ With Smarty
   {image_factory attr=['class'=> 'example-1'] code='test' view="product" view_id="325" inner="<li>?</li>" limit=10}
 </ul>
 
+{* With product sale element id *}
+<ul>
+  {image_factory attr=['class'=> 'example-1'] code='test' view="product_sale_element" view_id="21" inner="<li>?</li>" limit=10}
+</ul>
+
 {* With image id *}
 <ul>
   {image_factory attr=['class'=> 'example-2'] code='test' view="product" image_id="10,11,12,13,14" inner="<li>?</li>"}
@@ -73,4 +78,12 @@ It's possible to force the generation process by adding the option `--force`.
 
 ```shell
     php Thelia image-factory:generate-destination product-high,product-medium,product-small --force
+```
+
+#### The command image-factory:reload-factory
+
+For reload all factories in the cache
+
+```shell
+    php Thelia image-factory:reload-factory
 ```

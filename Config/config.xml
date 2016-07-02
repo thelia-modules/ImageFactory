@@ -26,6 +26,7 @@
 
     <commands>
         <command class="ImageFactory\Command\GenerateDestinationCommand" />
+        <command class="ImageFactory\Command\ReloadFactoryCommand" />
     </commands>
 
     <!--
