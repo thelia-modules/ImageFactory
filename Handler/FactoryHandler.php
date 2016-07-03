@@ -283,11 +283,17 @@ class FactoryHandler
 
             $sources = [];
             foreach ($imageFactory->getSources() as $source) {
-                $sources[] = $path = realpath($source) ? realpath($source) : realpath(THELIA_ROOT . $source);
-
-                if ($path === false) {
-                    throw new \Exception('Invalid source "' . $source . '" for factory ' . $factory->getCode());
+                if (false !== $path = realpath($source)) {
+                    $sources[] = $path;
+                    continue;
                 }
+
+                if (preg_match('/^[a-z]:\\\|^\//i', $source) !== 0) {
+                    $sources[] = $source;
+                    continue;
+                }
+
+                $sources[] = THELIA_ROOT . $source;
             }
             $factory->setSources($sources);
 

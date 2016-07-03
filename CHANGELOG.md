@@ -1,3 +1,7 @@
+# 0.3.1
+
+- #15 Fix possible bug when the source directory does not exist
+
 # 0.3.0
 
 - #14 Fix factory resolver by url, it's possible to have a same destination for the factories who use a prefix or suffix
