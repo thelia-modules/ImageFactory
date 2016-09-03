@@ -215,6 +215,13 @@ abstract class ImageFactory implements ActiveRecordInterface
     protected $persist;
 
     /**
+     * The value for the allow_zoom field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $allow_zoom;
+
+    /**
      * The value for the imagine_library_code field.
      * Note: this column has a database default value of: 'gd'
      * @var        string
@@ -303,6 +310,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->resampling_filter = 'undefined';
         $this->interlace = 'none';
         $this->persist = true;
+        $this->allow_zoom = false;
         $this->imagine_library_code = 'gd';
         $this->disable_i18n_processing = 0;
     }
@@ -857,6 +865,17 @@ abstract class ImageFactory implements ActiveRecordInterface
     {
 
         return $this->persist;
+    }
+
+    /**
+     * Get the [allow_zoom] column value.
+     *
+     * @return   boolean
+     */
+    public function getAllowZoom()
+    {
+
+        return $this->allow_zoom;
     }
 
     /**
@@ -1496,6 +1515,35 @@ abstract class ImageFactory implements ActiveRecordInterface
     } // setPersist()
 
     /**
+     * Sets the value of the [allow_zoom] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param      boolean|integer|string $v The new value
+     * @return   \ImageFactory\Model\ImageFactory The current object (for fluent API support)
+     */
+    public function setAllowZoom($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->allow_zoom !== $v) {
+            $this->allow_zoom = $v;
+            $this->modifiedColumns[ImageFactoryTableMap::ALLOW_ZOOM] = true;
+        }
+
+
+        return $this;
+    } // setAllowZoom()
+
+    /**
      * Set the value of [imagine_library_code] column.
      * Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants.
      * @param      string $v new value
@@ -1667,6 +1715,10 @@ abstract class ImageFactory implements ActiveRecordInterface
                 return false;
             }
 
+            if ($this->allow_zoom !== false) {
+                return false;
+            }
+
             if ($this->imagine_library_code !== 'gd') {
                 return false;
             }
@@ -1766,25 +1818,28 @@ abstract class ImageFactory implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 19 + $startcol : ImageFactoryTableMap::translateFieldName('Persist', TableMap::TYPE_PHPNAME, $indexType)];
             $this->persist = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ImageFactoryTableMap::translateFieldName('ImagineLibraryCode', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 20 + $startcol : ImageFactoryTableMap::translateFieldName('AllowZoom', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->allow_zoom = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : ImageFactoryTableMap::translateFieldName('ImagineLibraryCode', TableMap::TYPE_PHPNAME, $indexType)];
             $this->imagine_library_code = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 21 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundSource', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundSource', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_not_found_source = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 22 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundDestinationFileName', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : ImageFactoryTableMap::translateFieldName('ImageNotFoundDestinationFileName', TableMap::TYPE_PHPNAME, $indexType)];
             $this->image_not_found_destination_file_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 23 + $startcol : ImageFactoryTableMap::translateFieldName('DisableI18nProcessing', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : ImageFactoryTableMap::translateFieldName('DisableI18nProcessing', TableMap::TYPE_PHPNAME, $indexType)];
             $this->disable_i18n_processing = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 24 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : ImageFactoryTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : ImageFactoryTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1797,7 +1852,7 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 26; // 26 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 27; // 27 = ImageFactoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \ImageFactory\Model\ImageFactory object", 0, $e);
@@ -2096,6 +2151,9 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::PERSIST)) {
             $modifiedColumns[':p' . $index++]  = 'PERSIST';
         }
+        if ($this->isColumnModified(ImageFactoryTableMap::ALLOW_ZOOM)) {
+            $modifiedColumns[':p' . $index++]  = 'ALLOW_ZOOM';
+        }
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE)) {
             $modifiedColumns[':p' . $index++]  = 'IMAGINE_LIBRARY_CODE';
         }
@@ -2184,6 +2242,9 @@ abstract class ImageFactory implements ActiveRecordInterface
                         break;
                     case 'PERSIST':
                         $stmt->bindValue($identifier, (int) $this->persist, PDO::PARAM_INT);
+                        break;
+                    case 'ALLOW_ZOOM':
+                        $stmt->bindValue($identifier, (int) $this->allow_zoom, PDO::PARAM_INT);
                         break;
                     case 'IMAGINE_LIBRARY_CODE':
                         $stmt->bindValue($identifier, $this->imagine_library_code, PDO::PARAM_STR);
@@ -2326,21 +2387,24 @@ abstract class ImageFactory implements ActiveRecordInterface
                 return $this->getPersist();
                 break;
             case 20:
-                return $this->getImagineLibraryCode();
+                return $this->getAllowZoom();
                 break;
             case 21:
-                return $this->getImageNotFoundSource();
+                return $this->getImagineLibraryCode();
                 break;
             case 22:
-                return $this->getImageNotFoundDestinationFileName();
+                return $this->getImageNotFoundSource();
                 break;
             case 23:
-                return $this->getDisableI18nProcessing();
+                return $this->getImageNotFoundDestinationFileName();
                 break;
             case 24:
-                return $this->getCreatedAt();
+                return $this->getDisableI18nProcessing();
                 break;
             case 25:
+                return $this->getCreatedAt();
+                break;
+            case 26:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -2392,12 +2456,13 @@ abstract class ImageFactory implements ActiveRecordInterface
             $keys[17] => $this->getPixelRatios(),
             $keys[18] => $this->getInterlace(),
             $keys[19] => $this->getPersist(),
-            $keys[20] => $this->getImagineLibraryCode(),
-            $keys[21] => $this->getImageNotFoundSource(),
-            $keys[22] => $this->getImageNotFoundDestinationFileName(),
-            $keys[23] => $this->getDisableI18nProcessing(),
-            $keys[24] => $this->getCreatedAt(),
-            $keys[25] => $this->getUpdatedAt(),
+            $keys[20] => $this->getAllowZoom(),
+            $keys[21] => $this->getImagineLibraryCode(),
+            $keys[22] => $this->getImageNotFoundSource(),
+            $keys[23] => $this->getImageNotFoundDestinationFileName(),
+            $keys[24] => $this->getDisableI18nProcessing(),
+            $keys[25] => $this->getCreatedAt(),
+            $keys[26] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2519,21 +2584,24 @@ abstract class ImageFactory implements ActiveRecordInterface
                 $this->setPersist($value);
                 break;
             case 20:
-                $this->setImagineLibraryCode($value);
+                $this->setAllowZoom($value);
                 break;
             case 21:
-                $this->setImageNotFoundSource($value);
+                $this->setImagineLibraryCode($value);
                 break;
             case 22:
-                $this->setImageNotFoundDestinationFileName($value);
+                $this->setImageNotFoundSource($value);
                 break;
             case 23:
-                $this->setDisableI18nProcessing($value);
+                $this->setImageNotFoundDestinationFileName($value);
                 break;
             case 24:
-                $this->setCreatedAt($value);
+                $this->setDisableI18nProcessing($value);
                 break;
             case 25:
+                $this->setCreatedAt($value);
+                break;
+            case 26:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -2580,12 +2648,13 @@ abstract class ImageFactory implements ActiveRecordInterface
         if (array_key_exists($keys[17], $arr)) $this->setPixelRatios($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setInterlace($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setPersist($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setImagineLibraryCode($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setImageNotFoundSource($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setImageNotFoundDestinationFileName($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setDisableI18nProcessing($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setCreatedAt($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setUpdatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[20], $arr)) $this->setAllowZoom($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setImagineLibraryCode($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setImageNotFoundSource($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setImageNotFoundDestinationFileName($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setDisableI18nProcessing($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setCreatedAt($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setUpdatedAt($arr[$keys[26]]);
     }
 
     /**
@@ -2617,6 +2686,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         if ($this->isColumnModified(ImageFactoryTableMap::PIXEL_RATIOS)) $criteria->add(ImageFactoryTableMap::PIXEL_RATIOS, $this->pixel_ratios);
         if ($this->isColumnModified(ImageFactoryTableMap::INTERLACE)) $criteria->add(ImageFactoryTableMap::INTERLACE, $this->interlace);
         if ($this->isColumnModified(ImageFactoryTableMap::PERSIST)) $criteria->add(ImageFactoryTableMap::PERSIST, $this->persist);
+        if ($this->isColumnModified(ImageFactoryTableMap::ALLOW_ZOOM)) $criteria->add(ImageFactoryTableMap::ALLOW_ZOOM, $this->allow_zoom);
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE)) $criteria->add(ImageFactoryTableMap::IMAGINE_LIBRARY_CODE, $this->imagine_library_code);
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE)) $criteria->add(ImageFactoryTableMap::IMAGE_NOT_FOUND_SOURCE, $this->image_not_found_source);
         if ($this->isColumnModified(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME)) $criteria->add(ImageFactoryTableMap::IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, $this->image_not_found_destination_file_name);
@@ -2705,6 +2775,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $copyObj->setPixelRatios($this->getPixelRatios());
         $copyObj->setInterlace($this->getInterlace());
         $copyObj->setPersist($this->getPersist());
+        $copyObj->setAllowZoom($this->getAllowZoom());
         $copyObj->setImagineLibraryCode($this->getImagineLibraryCode());
         $copyObj->setImageNotFoundSource($this->getImageNotFoundSource());
         $copyObj->setImageNotFoundDestinationFileName($this->getImageNotFoundDestinationFileName());
@@ -3023,6 +3094,7 @@ abstract class ImageFactory implements ActiveRecordInterface
         $this->pixel_ratios_unserialized = null;
         $this->interlace = null;
         $this->persist = null;
+        $this->allow_zoom = null;
         $this->imagine_library_code = null;
         $this->image_not_found_source = null;
         $this->image_not_found_destination_file_name = null;

@@ -26,6 +26,7 @@
         <column name="pixel_ratios" type="ARRAY" />
         <column name="interlace" type="VARCHAR" size="55" defaultValue="none" />
         <column name="persist" type="BOOLEAN" defaultValue="1" />
+        <column name="allow_zoom" type="BOOLEAN" defaultValue="0" />
         <column name="imagine_library_code" type="VARCHAR" defaultValue="gd" description="Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants." />
         <column name="image_not_found_source" size="255" type="VARCHAR" />
         <column name="image_not_found_destination_file_name" size="255" type="VARCHAR" />

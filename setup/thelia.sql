@@ -31,6 +31,7 @@ CREATE TABLE `image_factory`
     `pixel_ratios` TEXT,
     `interlace` VARCHAR(55) DEFAULT 'none',
     `persist` TINYINT(1) DEFAULT 1,
+    `allow_zoom` TINYINT(1) DEFAULT 0,
     `imagine_library_code` VARCHAR(255) DEFAULT 'gd' COMMENT 'Available filters are FactoryEntity::IMAGINE_LIBRARY8_* constants.',
     `image_not_found_source` VARCHAR(255),
     `image_not_found_destination_file_name` VARCHAR(255),

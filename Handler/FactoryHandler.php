@@ -262,6 +262,7 @@ class FactoryHandler
                 ->setBackgroundOpacity($imageFactory->getBackgroundOpacity())
                 ->setDisableI18nProcessing($imageFactory->getDisableI18nProcessing())
                 ->setJustSymlink($imageFactory->getJustSymlink())
+                ->setAllowZoom($imageFactory->getAllowZoom())
             ;
 
             $imageNotFoundSource = $imageFactory->getImageNotFoundSource();

@@ -42,6 +42,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery orderByPixelRatios($order = Criteria::ASC) Order by the pixel_ratios column
  * @method     ChildImageFactoryQuery orderByInterlace($order = Criteria::ASC) Order by the interlace column
  * @method     ChildImageFactoryQuery orderByPersist($order = Criteria::ASC) Order by the persist column
+ * @method     ChildImageFactoryQuery orderByAllowZoom($order = Criteria::ASC) Order by the allow_zoom column
  * @method     ChildImageFactoryQuery orderByImagineLibraryCode($order = Criteria::ASC) Order by the imagine_library_code column
  * @method     ChildImageFactoryQuery orderByImageNotFoundSource($order = Criteria::ASC) Order by the image_not_found_source column
  * @method     ChildImageFactoryQuery orderByImageNotFoundDestinationFileName($order = Criteria::ASC) Order by the image_not_found_destination_file_name column
@@ -69,6 +70,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactoryQuery groupByPixelRatios() Group by the pixel_ratios column
  * @method     ChildImageFactoryQuery groupByInterlace() Group by the interlace column
  * @method     ChildImageFactoryQuery groupByPersist() Group by the persist column
+ * @method     ChildImageFactoryQuery groupByAllowZoom() Group by the allow_zoom column
  * @method     ChildImageFactoryQuery groupByImagineLibraryCode() Group by the imagine_library_code column
  * @method     ChildImageFactoryQuery groupByImageNotFoundSource() Group by the image_not_found_source column
  * @method     ChildImageFactoryQuery groupByImageNotFoundDestinationFileName() Group by the image_not_found_destination_file_name column
@@ -107,6 +109,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildImageFactory findOneByPixelRatios(array $pixel_ratios) Return the first ChildImageFactory filtered by the pixel_ratios column
  * @method     ChildImageFactory findOneByInterlace(string $interlace) Return the first ChildImageFactory filtered by the interlace column
  * @method     ChildImageFactory findOneByPersist(boolean $persist) Return the first ChildImageFactory filtered by the persist column
+ * @method     ChildImageFactory findOneByAllowZoom(boolean $allow_zoom) Return the first ChildImageFactory filtered by the allow_zoom column
  * @method     ChildImageFactory findOneByImagineLibraryCode(string $imagine_library_code) Return the first ChildImageFactory filtered by the imagine_library_code column
  * @method     ChildImageFactory findOneByImageNotFoundSource(string $image_not_found_source) Return the first ChildImageFactory filtered by the image_not_found_source column
  * @method     ChildImageFactory findOneByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return the first ChildImageFactory filtered by the image_not_found_destination_file_name column
@@ -134,6 +137,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByPixelRatios(array $pixel_ratios) Return ChildImageFactory objects filtered by the pixel_ratios column
  * @method     array findByInterlace(string $interlace) Return ChildImageFactory objects filtered by the interlace column
  * @method     array findByPersist(boolean $persist) Return ChildImageFactory objects filtered by the persist column
+ * @method     array findByAllowZoom(boolean $allow_zoom) Return ChildImageFactory objects filtered by the allow_zoom column
  * @method     array findByImagineLibraryCode(string $imagine_library_code) Return ChildImageFactory objects filtered by the imagine_library_code column
  * @method     array findByImageNotFoundSource(string $image_not_found_source) Return ChildImageFactory objects filtered by the image_not_found_source column
  * @method     array findByImageNotFoundDestinationFileName(string $image_not_found_destination_file_name) Return ChildImageFactory objects filtered by the image_not_found_destination_file_name column
@@ -228,7 +232,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, ALLOW_ZOOM, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1185,6 +1189,33 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::PERSIST, $persist, $comparison);
+    }
+
+    /**
+     * Filter the query on the allow_zoom column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAllowZoom(true); // WHERE allow_zoom = true
+     * $query->filterByAllowZoom('yes'); // WHERE allow_zoom = true
+     * </code>
+     *
+     * @param     boolean|string $allowZoom The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByAllowZoom($allowZoom = null, $comparison = null)
+    {
+        if (is_string($allowZoom)) {
+            $allow_zoom = in_array(strtolower($allowZoom), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::ALLOW_ZOOM, $allowZoom, $comparison);
     }
 
     /**
