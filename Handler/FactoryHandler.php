@@ -20,6 +20,7 @@ use ImageFactory\Model\ImageFactoryQuery;
 use ImageFactory\Resolver\FactoryResolver;
 use ImageFactory\Response\FactoryResponse;
 use ImageFactory\Util\PathInfo;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -237,7 +238,7 @@ class FactoryHandler
     {
         $factories = new FactoryEntityCollection();
 
-        $imageFactories = ImageFactoryQuery::create()->find();
+        $imageFactories = ImageFactoryQuery::create()->orderByPriority(Criteria::DESC)->find();
 
         /** @var ImageFactoryModel $imageFactory */
         foreach ($imageFactories as $imageFactory) {

@@ -24,6 +24,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildImageFactoryQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildImageFactoryQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method     ChildImageFactoryQuery orderByPriority($order = Criteria::ASC) Order by the priority column
  * @method     ChildImageFactoryQuery orderBySources($order = Criteria::ASC) Order by the sources column
  * @method     ChildImageFactoryQuery orderByDestination($order = Criteria::ASC) Order by the destination column
  * @method     ChildImageFactoryQuery orderByJustSymlink($order = Criteria::ASC) Order by the just_symlink column
@@ -52,6 +53,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildImageFactoryQuery groupById() Group by the id column
  * @method     ChildImageFactoryQuery groupByCode() Group by the code column
+ * @method     ChildImageFactoryQuery groupByPriority() Group by the priority column
  * @method     ChildImageFactoryQuery groupBySources() Group by the sources column
  * @method     ChildImageFactoryQuery groupByDestination() Group by the destination column
  * @method     ChildImageFactoryQuery groupByJustSymlink() Group by the just_symlink column
@@ -91,6 +93,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildImageFactory findOneById(int $id) Return the first ChildImageFactory filtered by the id column
  * @method     ChildImageFactory findOneByCode(string $code) Return the first ChildImageFactory filtered by the code column
+ * @method     ChildImageFactory findOneByPriority(int $priority) Return the first ChildImageFactory filtered by the priority column
  * @method     ChildImageFactory findOneBySources(array $sources) Return the first ChildImageFactory filtered by the sources column
  * @method     ChildImageFactory findOneByDestination(string $destination) Return the first ChildImageFactory filtered by the destination column
  * @method     ChildImageFactory findOneByJustSymlink(int $just_symlink) Return the first ChildImageFactory filtered by the just_symlink column
@@ -119,6 +122,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     array findById(int $id) Return ChildImageFactory objects filtered by the id column
  * @method     array findByCode(string $code) Return ChildImageFactory objects filtered by the code column
+ * @method     array findByPriority(int $priority) Return ChildImageFactory objects filtered by the priority column
  * @method     array findBySources(array $sources) Return ChildImageFactory objects filtered by the sources column
  * @method     array findByDestination(string $destination) Return ChildImageFactory objects filtered by the destination column
  * @method     array findByJustSymlink(int $just_symlink) Return ChildImageFactory objects filtered by the just_symlink column
@@ -232,7 +236,7 @@ abstract class ImageFactoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, ALLOW_ZOOM, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, PRIORITY, SOURCES, DESTINATION, JUST_SYMLINK, WIDTH, HEIGHT, QUALITY, BACKGROUND_COLOR, BACKGROUND_OPACITY, RESIZE_MODE, ROTATION, RESAMPLING_FILTER, PREFIX, SUFFIX, LAYERS, EFFECTS, PIXEL_RATIOS, INTERLACE, PERSIST, ALLOW_ZOOM, IMAGINE_LIBRARY_CODE, IMAGE_NOT_FOUND_SOURCE, IMAGE_NOT_FOUND_DESTINATION_FILE_NAME, DISABLE_I18N_PROCESSING, CREATED_AT, UPDATED_AT FROM image_factory WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -389,6 +393,47 @@ abstract class ImageFactoryQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ImageFactoryTableMap::CODE, $code, $comparison);
+    }
+
+    /**
+     * Filter the query on the priority column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPriority(1234); // WHERE priority = 1234
+     * $query->filterByPriority(array(12, 34)); // WHERE priority IN (12, 34)
+     * $query->filterByPriority(array('min' => 12)); // WHERE priority > 12
+     * </code>
+     *
+     * @param     mixed $priority The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildImageFactoryQuery The current query, for fluid interface
+     */
+    public function filterByPriority($priority = null, $comparison = null)
+    {
+        if (is_array($priority)) {
+            $useMinMax = false;
+            if (isset($priority['min'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::PRIORITY, $priority['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($priority['max'])) {
+                $this->addUsingAlias(ImageFactoryTableMap::PRIORITY, $priority['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ImageFactoryTableMap::PRIORITY, $priority, $comparison);
     }
 
     /**
