@@ -13,6 +13,7 @@ CREATE TABLE `image_factory`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(255) NOT NULL,
+    `priority` INTEGER DEFAULT 0,
     `sources` TEXT NOT NULL,
     `destination` VARCHAR(255),
     `just_symlink` TINYINT DEFAULT 0,

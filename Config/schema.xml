@@ -6,6 +6,7 @@
     <table name="image_factory" namespace="ImageFactory\Model">
         <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
         <column name="code" required="true" size="255" type="VARCHAR" />
+        <column name="priority" type="INTEGER" defaultValue="0" />
         <column name="title" size="255" type="VARCHAR" />
         <column name="description" type="CLOB" />
         <column name="sources" required="true" type="ARRAY" />
