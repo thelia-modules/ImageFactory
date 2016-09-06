@@ -59,6 +59,35 @@ class FactoryResponse
     /** @var string */
     protected $imageBinary;
 
+    /** @var  */
+    protected $html;
+
+    /**
+     * @return mixed
+     */
+    public function getHtml()
+    {
+        return $this->html;
+    }
+
+    /**
+     * @param mixed $html
+     * @return FactoryResponse
+     */
+    public function setHtml($html)
+    {
+        $this->html = $html;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->html;
+    }
+
     /**
      * @return string
      */

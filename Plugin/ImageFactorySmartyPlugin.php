@@ -13,6 +13,8 @@ namespace ImageFactory\Plugin;
 
 use ImageFactory\Entity\FactoryEntity;
 use ImageFactory\Handler\FactoryHandler;
+use ImageFactory\Response\FactoryResponse;
+use ImageFactory\Response\FactoryResponseCollection;
 use ImageFactory\Util\PathInfo;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -90,13 +92,15 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             $factory->setDisableI18nProcessing((bool) $disableI18nProcessing);
         }
 
+        $factoryResponseCollection = new FactoryResponseCollection();
+
         if (null !== $this->getParam($params, self::ARG_FILE_NAME)) {
-            $images = $this->resolveByFileName($factory, $params);
+             $this->resolveByFileName($factory, $factoryResponseCollection, $params);
         } elseif (null !== $this->getParam($params, self::ARG_VIEW)) {
             if (null !== $this->getParam($params, self::ARG_VIEW_ID)) {
-                $images = $this->resolveByViewId($factory, $params);
+                $this->resolveByViewId($factory, $factoryResponseCollection, $params);
             } elseif (null !== $this->getParam($params, self::ARG_IMAGE_ID)) {
-                $images = $this->resolveByImageId($factory, $params);
+                $this->resolveByImageId($factory, $factoryResponseCollection, $params);
             }
         }
 
@@ -105,42 +109,59 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             if ($strictMode) {
                 throw new \InvalidArgumentException('Invalid argument for smarty method image_factory');
             } elseif ((bool) $this->getParam($params, self::ARG_FORCE_NOT_FOUND, false)) {
-                $images = $this->generateImagesNotFound($factory, $params);
+                $this->generateImagesNotFound($factory, $factoryResponseCollection, $params);
             }
         }
 
-        // Todo faker
-        /*
-        if ($factory->isFaker()) {
-            if (null !== $limit = $this->getParam($params, self::ARG_LIMIT, null)) {
-                if (count($images) < $limit) {
-                    $nbFake = ($limit) - count($images);
-                    for ($i = 0; $i < $nbFake; $i++) {
-                        $images[] = $this->generateImageFake($factory, $params);
-                    }
+        return $this->generateSmartyResponse($smarty, $factoryResponseCollection, $params);
+    }
+
+    /**
+     * @param \Smarty_Internal_Template $smarty
+     * @param FactoryResponseCollection $factoryResponseCollection
+     * @param array $params
+     * @return null|string
+     */
+    protected function generateSmartyResponse(
+        \Smarty_Internal_Template &$smarty,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params
+    ) {
+        if (count($factoryResponseCollection)) {
+            $html = [];
+
+            foreach ($factoryResponseCollection as $factoryResponse) {
+                $params[self::ARG_ATTR]['src'] = $this->URL->absoluteUrl(
+                    '/' . $factoryResponse->getImageDestinationUri(),
+                    [],
+                    true
+                );
+
+                foreach ($params[self::ARG_ATTR] as $name => $attribute) {
+                    $params[self::ARG_ATTR][$name] = $name . '="' . addcslashes($attribute, '"') . '"';
                 }
-            }
-        }
-        */
 
-        if (!empty($images)) {
+                $factoryResponse->setHtml('<img ' . implode(' ', $params[self::ARG_ATTR]) . '/>');
+                $html[] = $factoryResponse->getHtml();
+            }
+
             // check if inner arg
             $inner = $this->getParam($params, self::ARG_INNER);
 
             if ($inner !== null && strpos($inner, '?') <= 0) {
-                foreach ($images as $key => $image) {
-                    $images[$key] = str_replace('?', $image, $inner);
+                foreach ($html as $key => $image) {
+                    $html[$key] = str_replace('?', $image, $inner);
                 }
             }
 
             // check if out method
             if (null !== $out = $this->getParam($params, self::ARG_OUT, null)) {
-                $smarty->assign($params[self::ARG_OUT], $images);
+                $smarty->assign($params[self::ARG_OUT], $factoryResponseCollection);
                 return null;
             }
 
             // else render string method
-            return implode("\r\n", $images);
+            return implode("\r\n", $html);
         }
 
         return "";
@@ -149,11 +170,14 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
     /**
      * Example : {image_factory attr=['class'=> 'example-2'] code='test' view="product" image_id="10,11,12,13,14" inner="<li>?</li>"}
      * @param FactoryEntity $factory
-     * @param $params
-     * @return \string[]
+     * @param FactoryResponseCollection $factoryResponseCollection
+     * @param array $params
      */
-    protected function resolveByImageId(FactoryEntity $factory, $params)
-    {
+    protected function resolveByImageId(
+        FactoryEntity $factory,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params
+    ) {
         $ids = explode(',', $this->getParam($params, self::ARG_IMAGE_ID));
 
         $modelCriteria = $this->getModelCriteriaByView($this->getParam($params, self::ARG_VIEW), $factory);
@@ -167,17 +191,20 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $imageModels = $modelCriteria->find();
 
-        return $this->generateImagesByModelCriteria($factory, $params, $imageModels);
+        $this->generateImagesByModelCriteria($factory, $factoryResponseCollection, $params, $imageModels);
     }
 
     /**
      * Example : {image_factory attr=['class'=> 'example-1'] code='test' view="product" view_id="325" inner="<li>?</li>" limit=10}
      * @param FactoryEntity $factory
-     * @param $params
-     * @return \string[]
+     * @param FactoryResponseCollection $factoryResponseCollection
+     * @param array $params
      */
-    protected function resolveByViewId(FactoryEntity $factory, $params)
-    {
+    protected function resolveByViewId(
+        FactoryEntity $factory,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params
+    ) {
         $view = $this->getParam($params, self::ARG_VIEW);
         $ids = explode(',', $this->getParam($params, self::ARG_VIEW_ID));
 
@@ -200,19 +227,20 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
         $imageModels = $modelCriteria->find();
 
-        return $this->generateImagesByModelCriteria($factory, $params, $imageModels);
+        $this->generateImagesByModelCriteria($factory, $factoryResponseCollection, $params, $imageModels);
     }
 
     /**
      * Example : {image_factory attr=['class'=> 'example-3'] code='test' file_name="sample-image-394.png,sample-image-396.png" inner="<li>?</li>"}
      * @param FactoryEntity $factory
-     * @param $params
-     * @return \string[]
+     * @param FactoryResponseCollection $factoryResponseCollection
+     * @param array $params
      */
-    protected function resolveByFileName(FactoryEntity $factory, $params)
-    {
-        $images = [];
-
+    protected function resolveByFileName(
+        FactoryEntity $factory,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params
+    ) {
         $fileNames = explode(',', $this->getParam($params, self::ARG_FILE_NAME));
 
         foreach ($fileNames as $fileName) {
@@ -223,7 +251,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
                     $path = $source . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension();
                     if (file_exists($path)) {
                         $pathInfo = new PathInfo($path);
-                        $images[] = $this->generateImage(
+                        $factoryResponseCollection[] = $this->generateFactoryResponse(
                             $factory,
                             $params,
                             $pathInfo->getDirname() . DS . $pathInfo->getFilename() . '.' . $pathInfo->getExtension()
@@ -233,8 +261,6 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
                 }
             }
         }
-
-        return $images;
     }
 
     /**
@@ -300,90 +326,68 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
 
     /**
      * @param FactoryEntity $factory
+     * @param FactoryResponseCollection $factoryResponseCollection
      * @param array $params
      * @param \Thelia\Model\Product[] $models
-     * @return string[]
      */
-    protected function generateImagesByModelCriteria(FactoryEntity $factory, array $params, $models)
-    {
-        $images = [];
-
+    protected function generateImagesByModelCriteria(
+        FactoryEntity $factory,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params,
+        $models
+    ) {
         /** @var \Thelia\Model\ProductImage $model */
         foreach ($models as $model) {
             if ($model->hasVirtualColumn('i18n_title')) {
                 $params[self::ARG_ATTR]['alt'] = $model->getVirtualColumn('i18n_title');
             }
 
-            $images[] = $this->generateImage(
+            $factoryResponseCollection[] = $this->generateFactoryResponse(
                 $factory,
                 $params,
                 $this->getPathByView($this->getParam($params, self::ARG_VIEW)) . DS . $model->getFile()
             );
         }
+    }
 
-        return $images;
+    /**
+     * @param FactoryEntity $factory
+     * @param FactoryResponseCollection $factoryResponseCollection
+     * @param array $params
+     * @return FactoryResponse[]
+     */
+    protected function generateImagesNotFound(
+        FactoryEntity $factory,
+        FactoryResponseCollection $factoryResponseCollection,
+        array $params
+    ) {
+        $nb = 1;
+        for ($i = 0; $i < $nb; $i++) {
+            $factoryResponseCollection[] = $this->generateFactoryResponse(
+                $factory,
+                $params,
+                $factory->getImageNotFoundSourcePath()
+            );
+        }
     }
 
     /**
      * @param FactoryEntity $factory
      * @param array $params
-     * @return array
+     * @param null|string $fileSource
+     * @return FactoryResponse
      */
-    protected function generateImagesNotFound(FactoryEntity $factory, array $params)
-    {
-        $images = [];
-        $nb = 1;
-
-        for ($i = 0; $i < $nb; $i++) {
-            $images[] = $this->generateImage($factory, $params, $factory->getImageNotFoundSourcePath());
-        }
-
-        return $images;
-    }
-
-    // Todo faker
-    /*
-    protected function generateImageFake(FactoryEntity $factory, $params)
-    {
-        $params[self::ARG_ATTR]['src'] = $this->URL->absoluteUrl(
-            '/' . $factory->getDestination() . '/'
-            . $this->factoryHandler->generateImageFakeByFactory($factory),
-            [],
-            true
-        );
-
-        foreach ($params[self::ARG_ATTR] as $name => $attribute) {
-            $params[self::ARG_ATTR][$name] = $name . '="' . addcslashes($attribute, '"') . '"';
-        }
-        return '<img ' . implode(' ', $params[self::ARG_ATTR]) . '/>';
-    }
-    */
-
-    /**
-     * @param FactoryEntity $factory
-     * @param $params
-     * @param null $fileSource
-     * @return string
-     */
-    protected function generateImage(FactoryEntity $factory, $params, $fileSource = null)
-    {
+    protected function generateFactoryResponse(
+        FactoryEntity $factory,
+        array $params,
+        $fileSource = null
+    ) {
         if ($fileSource !== null) {
             $pathInfo = new PathInfo($fileSource);
 
             $factory->setDisableProcessGenerate(true);
-            $factoryResponse = $this->getFactoryResolver()->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
-
-            $params[self::ARG_ATTR]['src'] = $this->URL->absoluteUrl(
-                '/' . $factoryResponse->getImageDestinationUri(),
-                [],
-                true
-            );
+            return $this->getFactoryResolver()->resolveByFactoryAndImagePathInfo($factory, $pathInfo);
         }
-
-        foreach ($params[self::ARG_ATTR] as $name => $attribute) {
-            $params[self::ARG_ATTR][$name] = $name . '="' . addcslashes($attribute, '"') . '"';
-        }
-        return '<img ' . implode(' ', $params[self::ARG_ATTR]) . '/>';
     }
 
     /**
