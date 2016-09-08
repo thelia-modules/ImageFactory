@@ -13,6 +13,7 @@
 namespace ImageFactory\Command;
 
 use ImageFactory\Entity\FactoryEntity;
+use ImageFactory\Entity\FactoryEntityCollection;
 use ImageFactory\Util\PathInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,7 +36,7 @@ class GenerateDestinationCommand extends ContainerAwareCommand
             ->setname('image-factory:generate-destination')
             ->addArgument(
                 'codes',
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 'Codes of factories separated by comma.'
             )
             ->addOption(
@@ -63,17 +64,27 @@ class GenerateDestinationCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $codes = $input->getArgument('codes');
-        $codes = explode(',', $codes);
 
-        foreach ($codes as $code) {
-            $code = trim($code);
-            $factory = $this->getFactoryResolver()->getByCode($code);
+        if ($codes === '*') {
+            $factories = $this->getFactoryResolver()->getFactoryCollection();
+        } else {
+            $codes = explode(',', $codes);
 
-            $output->writeln('<info>Start of process for the image factory ' . $code . '</info>');
+            $factories = new FactoryEntityCollection();
+
+            foreach ($codes as $code) {
+                $code = trim($code);
+                $factories[] = $this->getFactoryResolver()->getByCode($code);
+            }
+        }
+
+        /** @var FactoryEntity $factory */
+        foreach ($factories as $factory) {
+            $output->writeln('<info>Start of process for the image factory ' . $factory->getCode() . '</info>');
 
             $this->processGenerate($input, $output, $factory);
 
-            $output->writeln('<info>End of process for the image factory ' . $code . '</info>');
+            $output->writeln('<info>End of process for the image factory ' . $factory->getCode() . '</info>');
         }
     }
 

@@ -64,6 +64,15 @@ class FactoryResolver
     }
 
     /**
+     * @return FactoryEntityCollection
+     * @since 0.4.0
+     */
+    public function getFactoryCollection()
+    {
+        return $this->factoryCollection;
+    }
+
+    /**
      * @param FactoryEntity $factory
      * @param PathInfo $pathInfo
      * @return FactoryResponse
