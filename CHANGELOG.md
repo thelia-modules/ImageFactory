@@ -1,3 +1,9 @@
+# 0.4.0
+
+- #21 Update command `image-factory:generate-destination`, add simple syntax to target all factories
+- #20 Add option "priority"
+- #19 Add argument out on the smarty method
+
 # 0.3.1
 
 - #15 Fix possible bug when the source directory does not exist
