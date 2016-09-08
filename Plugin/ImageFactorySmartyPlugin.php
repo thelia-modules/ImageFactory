@@ -104,7 +104,7 @@ class ImageFactorySmartyPlugin extends AbstractSmartyPlugin
             }
         }
 
-        if (empty($images)) {
+        if (!count($factoryResponseCollection)) {
             $strictMode = (bool) $this->getParam($params, self::ARG_STRICT_MODE, false);
             if ($strictMode) {
                 throw new \InvalidArgumentException('Invalid argument for smarty method image_factory');
