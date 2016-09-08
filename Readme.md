@@ -46,6 +46,26 @@ With Smarty
 <ul>
   {image_factory force_not_found=true code='test' file_name="an-image-which-does-not-exist"}
 </ul>
+
+
+{* With an variable *}
+
+{image_factory out="images" force_not_found=true code='test' file_name="an-image-which-does-not-exist"}
+
+{$images|var_dump} {* $images is an collection of type ImageFactory\Entity\FactoryEntityCollection *}
+{$images[0]|var_dump} {* $images[0] is an object of type ImageFactory\Entity\FactoryEntity *}
+
+{* It's possibale to iterate on the collection *}
+
+{foreach from=$images key=k item=image}
+ {$image|var_dump}
+{/foreach}
+
+{* The object FactoryEntity implements the method __toString. This method returns the html code. *}
+
+{foreach from=$images key=k item=image}
+ {$image} {* Display the html code *}
+{/foreach}
 ```
 
 With PHP
@@ -93,4 +113,3 @@ For reload all factories in the cache
 ```shell
     php Thelia image-factory:reload-factory
 ```
-
