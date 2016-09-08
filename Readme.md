@@ -1,7 +1,6 @@
 # Image Factory
 
-This module is in development, the readme will be completed later
-Thank you for your understanding
+This module provides an alternative to managing images in Thelia.
 
 ## Installation
 
@@ -15,7 +14,7 @@ Thank you for your understanding
 Add it in your main thelia composer.json file
 
 ```
-composer require thelia/image-factory-module:~0.3.0
+composer require thelia/image-factory-module:~0.4.0
 ```
 
 ## Usage
@@ -113,3 +112,28 @@ For reload all factories in the cache
 ```shell
     php Thelia image-factory:reload-factory
 ```
+
+#### Configure your factories on your database (table image_factory)
+        
+| Column        | Description           | Type          |
+|:-------------:|:-------------:|:-----:|
+| code      | The code of the factory | Text (Example : "product-medium") |
+| priority      | Loading priority      |   Integer (Example : 4, Default : 0) |
+| sources | A list of sources path    |    Text (Example : "  my/path/1  \|  my/path/2  ") |
+| destination | A destination path    |    Text (Example : "images/product/medium") |
+| just_symlink | For ignore the processing and create a symlink to the source file.    |    Boolean (Default : 0) |
+| width | The width of the destination image    |    Integer (Example : 400) |
+| height | The height of the destination image    |    Integer (Example : 400) |
+| quality | The quality of the destination image. From 1 to 100    |    Integer (Example : 90) |
+| background_color | The color applied to empty image parts during processing. Use rgb or rrggbb color format    |    Integer (Example : "000000", Default : "FFFFFF") |
+| background_opacity | The opacity applied to the background color. From 0 to 100   |    Integer (Example : 90, Default: 100) |
+| resize_mode | If 'exact_ratio_with_crop', the image will have the exact specified width and height, and will be cropped if required. If the source image is smaller than the required width and/or height, you have to set allow_zoom to true, otherwise the generated image will be smaller than required. If 'exact_ratio_with_borders', the image will have the exact specified width and height, and some borders may be added. The border color is the one specified by 'background_color'. If 'none' or missing, the image ratio is preserved, and depending od this ratio, may not have the exact width and height required.    |    Text (Default : "exact_ratio_with_borders") |
+| rotation | The rotation angle in degrees (positive or negative) applied to the image. From -180 to 180. The background color of the empty areas is the one specified by 'background_color'    |    Integer (Default : 0) |
+| persist | Persist on destination path after the processing     |    Integer (Default : 1) |
+| allow_zoom | If true, the factory il allowed to resize an image to match the required width and height, causing, in most cases, a quality loss. If false, the image will never be zoomed.     |    Integer (Default : 0) |
+| imagine_library_code | Name of the graphic driver used by the Imagine library (see https://imagine.readthedocs.org)     |    Integer (Default : "gd", Possible : "gd, imagick, gmagick") |
+
+#### Todo
+
+[ ] The configuration interface on the back office
+
