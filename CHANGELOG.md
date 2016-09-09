@@ -1,3 +1,7 @@
+# 0.4.1
+
+- #22 Fix bug, when a image path contains a special character
+
 # 0.4.0
 
 - #21 Update command `image-factory:generate-destination`, add simple syntax to target all factories

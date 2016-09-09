@@ -116,7 +116,7 @@ For reload all factories in the cache
 #### Configure your factories on your database (table image_factory)
         
 | Column        | Description           | Type          |
-|:-------------:|:-------------:|:-----:|
+|:------------- |:------------- |:----- |
 | code      | The code of the factory | Text (Example : "product-medium") |
 | priority      | Loading priority      |   Integer (Example : 4, Default : 0) |
 | sources | A list of sources path    |    Text (Example : "  my/path/1  \|  my/path/2  ") |
@@ -135,5 +135,5 @@ For reload all factories in the cache
 
 #### Todo
 
-[ ] The configuration interface on the back office
+- [ ] The configuration interface on the back office
 

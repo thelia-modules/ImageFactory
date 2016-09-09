@@ -66,7 +66,7 @@ class PathInfo
      */
     public function setDirname($dirname)
     {
-        $this->dirname = $dirname;
+        $this->dirname = urldecode($dirname);
         return $this;
     }
 
@@ -84,7 +84,7 @@ class PathInfo
      */
     public function setBasename($basename)
     {
-        $this->basename = $basename;
+        $this->basename = urldecode($basename);
         return $this;
     }
 
@@ -120,7 +120,7 @@ class PathInfo
      */
     public function setFilename($filename)
     {
-        $this->filename = $filename;
+        $this->filename = urldecode($filename);
         return $this;
     }
 }
