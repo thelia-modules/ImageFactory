@@ -1,3 +1,7 @@
+# 0.4.2
+
+- #24 Fix bug, when using the prefix and suffix
+
 # 0.4.1
 
 - #22 Fix bug, when a image path contains a special character
