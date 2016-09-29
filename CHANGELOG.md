@@ -1,3 +1,7 @@
+# 0.4.3
+
+- #25 Fix setup procedure
+
 # 0.4.2
 
 - #24 Fix bug, when using the prefix and suffix
