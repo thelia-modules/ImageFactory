@@ -172,7 +172,7 @@ class FactoryResolver
                     return $factory;
                 }
 
-                $regex = '#^' . preg_quote($prefix . '.+' . $suffix) . '$#';
+                $regex = '#^' . preg_quote($prefix) . '.+' . preg_quote($suffix) . '$#';
                 if (preg_match($regex, $pathInfo->getFilename())) {
                     return $factory;
                 }
