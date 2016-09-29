@@ -12,7 +12,6 @@
 
 namespace ImageFactory;
 
-use ImageFactory\Model\ImageFactoryQuery;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Thelia\Install\Database;
@@ -32,13 +31,10 @@ class ImageFactory extends BaseModule
     /**
      * @inheritDoc
      */
-    public function postActivation(ConnectionInterface $con = null)
+    public function install(ConnectionInterface $con = null)
     {
-        try {
-            ImageFactoryQuery::create()->findOne();
-        } catch (\Exception $e) {
-            (new Database($con))->insertSql(null, [$this->getSetupDir() . "thelia.sql", $this->getSetupDir() . "insert.sql"]);
-        }
+        (new Database($con))
+            ->insertSql(null, [$this->getSetupDir() . "thelia.sql", $this->getSetupDir() . "insert.sql"]);
     }
 
     /**
@@ -46,25 +42,19 @@ class ImageFactory extends BaseModule
      */
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
     {
-        try {
-            ImageFactoryQuery::create()->findOne();
+        $finder = (new Finder())
+            ->files()
+            ->name('#.*?\.sql#')
+            ->in($this->getSetupDir() . 'update'. DS . 'sql')
+        ;
 
-            $finder = (new Finder())
-                ->files()
-                ->name('#.*?\.sql#')
-                ->in($this->getSetupDir() . 'update'. DS . 'sql')
-            ;
+        $database = new Database($con);
 
-            $database = new Database($con);
-
-            /** @var SplFileInfo $updateSQLFile */
-            foreach ($finder as $updateSQLFile) {
-                if (version_compare($currentVersion, str_replace('.sql', '', $updateSQLFile->getFilename()), '<')) {
-                    $database->insertSql(null, [$updateSQLFile->getPathname()]);
-                }
+        /** @var SplFileInfo $updateSQLFile */
+        foreach ($finder as $updateSQLFile) {
+            if (version_compare($currentVersion, str_replace('.sql', '', $updateSQLFile->getFilename()), '<')) {
+                $database->insertSql(null, [$updateSQLFile->getPathname()]);
             }
-        } catch (\Exception $e) {
-            // no need
         }
     }
 
