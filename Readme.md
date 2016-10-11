@@ -51,8 +51,8 @@ With Smarty
 
 {image_factory out="images" force_not_found=true code='test' file_name="an-image-which-does-not-exist"}
 
-{$images|var_dump} {* $images is an collection of type ImageFactory\Entity\FactoryEntityCollection *}
-{$images[0]|var_dump} {* $images[0] is an object of type ImageFactory\Entity\FactoryEntity *}
+{$images|var_dump} {* $images is an collection of type ImageFactory\Response\FactoryResponseCollection *}
+{$images[0]|var_dump} {* $images[0] is an object of type ImageFactory\Response\FactoryResponse *}
 
 {* It's possibale to iterate on the collection *}
 
