@@ -1,5 +1,8 @@
 # Image Factory
 
+> This module is no longer maintained and will not be ported to Thelia 3. Its 2.x versions remain available on Packagist.
+> Thelia 3 resizes images in the core.
+
 This module provides an alternative to managing images in Thelia.
 
 ## Installation
